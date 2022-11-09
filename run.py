@@ -82,11 +82,37 @@ def take_user_input():
     return cleaned_u_input
 
 
+def evaluate_user_input(user_guesses, round):
+    round_number = round * -1 + 13
+    index_counter = 0
+    print(f'This is round {round}.')
+    print(f'User guessed {user_guesses}')
+    print(f'Solution is {code_to_guess}')
+    for guess in user_guesses:
+        feedback = ""
+        if guess == code_to_guess[index_counter]:
+            print('Perfect, user guessed both color and position correctly')
+            sleep(2)
+            playing_field[round_number] = playing_field[round_number].replace("O", "✓", 1)
+        elif guess in code_to_guess:
+            print('Color is correct, position is not')
+            sleep(2)
+            playing_field[round_number] = playing_field[round_number].replace("O", "◊", 1)
+        else:
+            print('Neither color nor position is correct.')
+            sleep(2)
+            playing_field[round_number] = playing_field[round_number].replace("O", "X", 1)
+        index_counter += 1
+        print_playing_field()
+        sleep(1)
+
+
 playing_field = create_playing_field()
 round = 1
+code_to_guess = generate_code()
 while game_is_on:
     print_playing_field()
-    code_to_guess = generate_code()
+    # print(f'Pssst, the solution is: {code_to_guess}')
     user_input = take_user_input()
     if user_input == 'quit':
         game_is_on = False
@@ -94,5 +120,10 @@ while game_is_on:
         print(f'Received user input {user_input} as valid input.')
         add_user_input_to_playing_field(round, user_input)
         print_playing_field()
+        evaluate_user_input(user_input, round)
+        # Check for win:
+
+        #Check for loss:
+        
         round += 1
      
