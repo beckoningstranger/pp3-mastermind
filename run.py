@@ -1,36 +1,48 @@
 from random import choice
-from art import logo, closer, opener
 from os import system
 from time import sleep
+from art import logo, closer, opener
 
-available_colors = ["green", "yellow", "red", "blue", "pink", "cyan"]
-playing_field = []
-game_is_on = True
+
+def setup_game():
+    global available_colors
+    global number_of_allowed_tries
+    global game_is_on
+    global playing_field
+    global round
+    global code_to_guess
+    available_colors = ["green", "yellow", "red", "blue", "pink", "cyan"]
+    number_of_allowed_tries = 8
+    game_is_on = True
+    playing_field = []
+    playing_field = create_playing_field()
+    round = 1
+    code_to_guess = generate_code()
 
 
 def create_playing_field():
     playing_field.append(opener)
-    for i in range(12, 0, -1):
+    for i in range(number_of_allowed_tries, 0, -1):
         playing_field.append(f'│ {i:02d}|--------O--------O---------O--------0--------│------O-O-O-O------ │')
     playing_field.append(closer)
     return playing_field
 
-def add_user_input_to_playing_field(round, user_input):
+
+def add_user_input_to_playing_field(rnd, user_input):
     first_color = user_input[0]
     second_color = user_input[1]
     third_color = user_input[2]
     fourth_color = user_input[3]
-    thing = 'O'
     spacer6 = '------'
     spacer8 = '--------'
     spacer9 = '---------'
-    round_number = -abs(round) + 13
-    playing_field[round_number] = f"| {round:02d}|{spacer8}{formatted_number(first_color)}{spacer8}{formatted_number(second_color)}{spacer9}{formatted_number(third_color)}{spacer8}{formatted_number(fourth_color)}{spacer8}|{spacer6}{thing}-{thing}-{thing}-{thing}{spacer6} |"
+    round_number = -abs(rnd) + number_of_allowed_tries + 1
+    playing_field[round_number] = f"| {rnd:02d}|{spacer8}{formatted_number(first_color)}{spacer8}{formatted_number(second_color)}{spacer9}{formatted_number(third_color)}{spacer8}{formatted_number(fourth_color)}{spacer8}|{spacer6}O-O-O-O{spacer6} |"
 
 
 def formatted_number(user_input):
     return colored_text("■", user_input)
-    
+
 
 def print_playing_field():
     system('clear')
@@ -83,7 +95,7 @@ def take_user_input():
 
 
 def evaluate_user_input(user_guesses, round):
-    round_number = -abs(round) + 13
+    round_number = -abs(round) + number_of_allowed_tries + 1
     index_counter = 0
     for guess in user_guesses:
         if guess == code_to_guess[index_counter]:
@@ -100,9 +112,7 @@ def evaluate_user_input(user_guesses, round):
         sleep(1)
 
 
-playing_field = create_playing_field()
-round = 1
-code_to_guess = generate_code()
+setup_game()
 while game_is_on:
     print_playing_field()
     # print(f'Pssst, the solution is: {code_to_guess}')
@@ -115,14 +125,12 @@ while game_is_on:
         print_playing_field()
         evaluate_user_input(user_input, round)
         # Check for win:
-        if "✓-✓-✓-✓" in playing_field[round -abs(round) + 13]:
+        line_to_check = -abs(round) + number_of_allowed_tries + 1
+        if "✓-✓-✓-✓" in playing_field[line_to_check]:
             print('You win! Congratulations!')
             game_is_on = False
         round += 1
-        #Check for loss:
+        # Check for loss:
         if round > 12:
             print('You lose! Better luck next time!')
             game_is_on = False
-
-        
-     
