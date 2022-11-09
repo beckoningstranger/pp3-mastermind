@@ -11,7 +11,7 @@ def setup_game():
     global playing_field
     global round
     global code_to_guess
-    available_colors = ["green", "yellow", "red", "blue", "pink", "cyan"]
+    available_colors = ["green", "yellow", "red", "blue", "pink", "cyan", "white", "black", "blank"]
     number_of_allowed_tries = 8
     game_is_on = True
     playing_field = []
@@ -41,7 +41,10 @@ def add_user_input_to_playing_field(rnd, user_input):
 
 
 def formatted_number(user_input):
-    return colored_text("■", user_input)
+    if user_input == "blank":
+        return colored_text(" ", user_input)
+    else:
+        return colored_text("■", user_input)
 
 
 def print_playing_field():
@@ -62,23 +65,30 @@ def generate_code():
 
 
 def colored_text(text, color):
-    if color == "yellow":
-        color = '\x1b[93m'
-    elif color == "red":
-        color = '\x1b[91m'
-    elif color == "pink":
-        color = '\x1b[95m'
-    elif color == "green":
-        color = '\x1b[92m'
-    elif color == "cyan":
-        color = '\x1b[96m'
-    elif color == "blue":
-        color = '\x1b[94m'
+    match color:
+        case "yellow":
+            color = '\x1b[93m'
+        case "red":
+            color = '\x1b[91m'
+        case "pink":
+            color = '\x1b[95m'
+        case "green":
+            color = '\x1b[92m'
+        case "cyan":
+            color = '\x1b[96m'
+        case "blue":
+            color = '\x1b[94m'
+        case "blank":
+            color = '\x1b[39m'
+        case "black":
+            color = '\x1b[90m'
+        case "white":
+            color = '\x1b[97m'
     return color + text + '\x1b[39m'
 
 
 def take_user_input():
-    u_input = input(f"Please type in a color combination or 'quit' to exit the game.\nPossible colors are {colored_text('green', 'green')}, {colored_text('yellow', 'yellow')}, {colored_text('red', 'red')}, {colored_text('pink', 'pink')}, {colored_text('cyan', 'cyan')} and {colored_text('blue', 'blue')}:\nRound {round}: ")
+    u_input = input(f"Please type in a color combination (blanks are also allowed) or 'quit' to exit the game.\nApart from blanks, possible colors are {colored_text('green', 'green')}, {colored_text('yellow', 'yellow')}, {colored_text('red', 'red')}, {colored_text('pink', 'pink')}, {colored_text('cyan', 'cyan')}, {colored_text('white', 'white')}, {colored_text('black', 'black')} and {colored_text('blue', 'blue')}:\nRound {round}: ")
     if u_input == 'quit':
         return u_input
     cleaned_u_input = u_input.split(" ")
@@ -88,7 +98,7 @@ def take_user_input():
             sleep(1)
             return "invalid"
     if len(cleaned_u_input) != 4:
-        print(f'You need to enter exactly 4 colors, but you entered {len(cleaned_u_input)}. Please try again.')
+        print(f'You need to enter exactly 4 colors (blanks are also allowed), but you entered {len(cleaned_u_input)}. Please try again.')
         sleep(1)
         return "invalid"
     return cleaned_u_input
@@ -109,6 +119,7 @@ def evaluate_user_input(user_guesses, round):
             playing_field[round_number] = playing_field[round_number].replace("O", "X", 1)
         index_counter += 1
         print_playing_field()
+        print('Slowly evaluating your input for dramatic effect...')
         sleep(1)
 
 
