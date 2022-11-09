@@ -25,8 +25,12 @@ def add_user_input_to_playing_field(round, user_input):
     spacer8 = '--------'
     spacer9 = '---------'
     round_number = round * -1 + 13
-    playing_field[round_number] = f"| {round:02d}|{spacer8}{first_color}{spacer8}{second_color}{spacer9}{third_color}{spacer8}{fourth_color}{spacer8}|{spacer6}{thing}-{thing}-{thing}-{thing}{spacer6} |"
+    playing_field[round_number] = f"| {round:02d}|{spacer8}{formatted_number(first_color)}{spacer8}{formatted_number(second_color)}{spacer9}{formatted_number(third_color)}{spacer8}{formatted_number(fourth_color)}{spacer8}|{spacer6}{thing}-{thing}-{thing}-{thing}{spacer6} |"
 
+
+def formatted_number(user_input):
+    return colored_text("■", user_input)
+    
 
 def print_playing_field():
     system('clear')
