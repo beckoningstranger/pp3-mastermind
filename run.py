@@ -4,20 +4,9 @@ from time import sleep
 from art import logo, closer, opener
 
 
-def setup_game():
-    global available_colors
-    global number_of_allowed_tries
-    global game_is_on
-    global playing_field
-    global round
-    global code_to_guess
-    available_colors = ["green", "yellow", "red", "blue", "pink", "cyan", "white", "black", "blank"]
-    number_of_allowed_tries = 8
-    game_is_on = True
-    playing_field = []
-    playing_field = create_playing_field()
-    round = 1
-    code_to_guess = generate_code()
+available_colors = ["green", "yellow", "red", "blue", "pink", "cyan", "white", "black", "blank"]
+number_of_allowed_tries = 8
+game_is_on = True
 
 
 def create_playing_field():
@@ -28,23 +17,25 @@ def create_playing_field():
     return playing_field
 
 
-def add_user_input_to_playing_field(rnd, user_input):
-    first_color = user_input[0]
-    second_color = user_input[1]
-    third_color = user_input[2]
-    fourth_color = user_input[3]
+def add_user_input_to_playing_field(rnd, user_inp):
+    first_color = user_inp[0]
+    second_color = user_inp[1]
+    third_color = user_inp[2]
+    fourth_color = user_inp[3]
     spacer6 = '------'
     spacer8 = '--------'
     spacer9 = '---------'
     round_number = -abs(rnd) + number_of_allowed_tries + 1
-    playing_field[round_number] = f"| {rnd:02d}|{spacer8}{formatted_number(first_color)}{spacer8}{formatted_number(second_color)}{spacer9}{formatted_number(third_color)}{spacer8}{formatted_number(fourth_color)}{spacer8}|{spacer6}O-O-O-O{spacer6} |"
+    playing_field[round_number] = f"| {rnd:02d}|{spacer8}{formatted_number(first_color)}{spacer8}" \
+                                  f"{formatted_number(second_color)}{spacer9}{formatted_number(third_color)}{spacer8}" \
+                                  f"{formatted_number(fourth_color)}{spacer8}|{spacer6}O-O-O-O{spacer6} |"
 
 
-def formatted_number(user_input):
-    if user_input == "blank":
-        return colored_text(" ", user_input)
+def formatted_number(color):
+    if color == "blank":
+        return colored_text(" ", color)
     else:
-        return colored_text("■", user_input)
+        return colored_text("■", color)
 
 
 def print_playing_field():
@@ -88,7 +79,11 @@ def colored_text(text, color):
 
 
 def take_user_input():
-    u_input = input(f"Please type in a color combination (blanks are also allowed) or 'quit' to exit the game.\nApart from blanks, possible colors are {colored_text('green', 'green')}, {colored_text('yellow', 'yellow')}, {colored_text('red', 'red')}, {colored_text('pink', 'pink')}, {colored_text('cyan', 'cyan')}, {colored_text('white', 'white')}, {colored_text('black', 'black')} and {colored_text('blue', 'blue')}:\nRound {round}: ")
+    u_input = input(f"Please type in a color combination (blanks are also allowed) or 'quit' to stop playing.\n"
+                    f"Apart from blanks, possible colors are {colored_text('green', 'green')}, "
+                    f"{colored_text('yellow', 'yellow')}, {colored_text('red', 'red')}, {colored_text('pink', 'pink')},"
+                    f" {colored_text('cyan', 'cyan')}, {colored_text('white', 'white')}, "
+                    f"{colored_text('black', 'black')} and {colored_text('blue', 'blue')}:\nRound {turn}: ")
     if u_input == 'quit':
         return u_input
     cleaned_u_input = u_input.split(" ")
@@ -98,14 +93,15 @@ def take_user_input():
             sleep(1)
             return "invalid"
     if len(cleaned_u_input) != 4:
-        print(f'You need to enter exactly 4 colors (blanks are also allowed), but you entered {len(cleaned_u_input)}. Please try again.')
+        print(f'You need to enter exactly 4 colors (blanks are also allowed), but you entered {len(cleaned_u_input)}. '
+              f'Please try again.')
         sleep(1)
         return "invalid"
     return cleaned_u_input
 
 
-def evaluate_user_input(user_guesses, round):
-    round_number = -abs(round) + number_of_allowed_tries + 1
+def evaluate_user_input(user_guesses, round_no):
+    round_number = -abs(round_no) + number_of_allowed_tries + 1
     index_counter = 0
     for guess in user_guesses:
         if guess == code_to_guess[index_counter]:
@@ -119,11 +115,15 @@ def evaluate_user_input(user_guesses, round):
             playing_field[round_number] = playing_field[round_number].replace("O", "X", 1)
         index_counter += 1
         print_playing_field()
-        print('Slowly evaluating your input for dramatic effect...')
+        print(f"Slowly evaluating your input for dramatic effect...\nRemember:\n'✓' means you got position and "
+              f"color right\n'◊' means the color is in the code, but it's not in the correct position\n'X' "
+              f"means this color is not in the code")
         sleep(1)
 
-
-setup_game()
+playing_field = []
+playing_field = create_playing_field()
+turn = 1
+code_to_guess = generate_code()
 while game_is_on:
     print_playing_field()
     # print(f'Pssst, the solution is: {code_to_guess}')
@@ -132,16 +132,16 @@ while game_is_on:
         game_is_on = False
     elif user_input != 'invalid':
         print(f'Received user input {user_input} as valid input.')
-        add_user_input_to_playing_field(round, user_input)
+        add_user_input_to_playing_field(turn, user_input)
         print_playing_field()
-        evaluate_user_input(user_input, round)
+        evaluate_user_input(user_input, turn)
         # Check for win:
-        line_to_check = -abs(round) + number_of_allowed_tries + 1
+        line_to_check = -abs(turn) + number_of_allowed_tries + 1
         if "✓-✓-✓-✓" in playing_field[line_to_check]:
             print('You win! Congratulations!')
             game_is_on = False
-        round += 1
+        turn += 1
         # Check for loss:
-        if round > 12:
+        if turn > 12:
             print('You lose! Better luck next time!')
             game_is_on = False
