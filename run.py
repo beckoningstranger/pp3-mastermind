@@ -24,7 +24,7 @@ def add_user_input_to_playing_field(round, user_input):
     spacer6 = '------'
     spacer8 = '--------'
     spacer9 = '---------'
-    round_number = round * -1 + 13
+    round_number = -abs(round) + 13
     playing_field[round_number] = f"| {round:02d}|{spacer8}{formatted_number(first_color)}{spacer8}{formatted_number(second_color)}{spacer9}{formatted_number(third_color)}{spacer8}{formatted_number(fourth_color)}{spacer8}|{spacer6}{thing}-{thing}-{thing}-{thing}{spacer6} |"
 
 
@@ -83,24 +83,17 @@ def take_user_input():
 
 
 def evaluate_user_input(user_guesses, round):
-    round_number = round * -1 + 13
+    round_number = -abs(round) + 13
     index_counter = 0
-    print(f'This is round {round}.')
-    print(f'User guessed {user_guesses}')
-    print(f'Solution is {code_to_guess}')
     for guess in user_guesses:
-        feedback = ""
         if guess == code_to_guess[index_counter]:
-            print('Perfect, user guessed both color and position correctly')
-            sleep(2)
+            sleep(1)
             playing_field[round_number] = playing_field[round_number].replace("O", "✓", 1)
         elif guess in code_to_guess:
-            print('Color is correct, position is not')
-            sleep(2)
+            sleep(1)
             playing_field[round_number] = playing_field[round_number].replace("O", "◊", 1)
         else:
-            print('Neither color nor position is correct.')
-            sleep(2)
+            sleep(1)
             playing_field[round_number] = playing_field[round_number].replace("O", "X", 1)
         index_counter += 1
         print_playing_field()
@@ -122,8 +115,14 @@ while game_is_on:
         print_playing_field()
         evaluate_user_input(user_input, round)
         # Check for win:
-
-        #Check for loss:
-        
+        if "✓-✓-✓-✓" in playing_field[round -abs(round) + 13]:
+            print('You win! Congratulations!')
+            game_is_on = False
         round += 1
+        #Check for loss:
+        if round > 12:
+            print('You lose! Better luck next time!')
+            game_is_on = False
+
+        
      
