@@ -4,12 +4,7 @@ from time import sleep
 from art import logo, closer, opener
 
 
-available_colors = ["green", "yellow", "red", "blue", "pink", "cyan", "white", "black", "blank"]
-number_of_allowed_tries = 8
-game_is_on = True
-
-
-def create_playing_field():
+def create_playing_field(number_of_allowed_tries):
     playing_field.append(opener)
     for i in range(number_of_allowed_tries, 0, -1):
         playing_field.append(f'│ {i:02d}|--------O--------O---------O--------0--------│------O-O-O-O------ │')
@@ -17,7 +12,7 @@ def create_playing_field():
     return playing_field
 
 
-def add_user_input_to_playing_field(rnd, user_inp):
+def add_user_input_to_playing_field(rnd, user_inp, number_of_allowed_tries):
     first_color = user_inp[0]
     second_color = user_inp[1]
     third_color = user_inp[2]
@@ -45,7 +40,7 @@ def print_playing_field():
         print(line)
 
 
-def generate_code():
+def generate_code(available_colors):
     """
     Doc string
     """
@@ -78,12 +73,13 @@ def colored_text(text, color):
     return color + text + '\x1b[39m'
 
 
-def take_user_input():
-    u_input = input(f"Please type in a color combination (blanks are also allowed) or 'quit' to stop playing.\n"
-                    f"Apart from blanks, possible colors are {colored_text('green', 'green')}, "
+def take_user_input(available_colors, turn):
+    u_input = input(f"Enter a color combination (blanks are allowed) or 'quit' to stop playing.\n"
+                    f"Valid are 'blank', {colored_text('green', 'green')}, "
                     f"{colored_text('yellow', 'yellow')}, {colored_text('red', 'red')}, {colored_text('pink', 'pink')},"
                     f" {colored_text('cyan', 'cyan')}, {colored_text('white', 'white')}, "
-                    f"{colored_text('black', 'black')} and {colored_text('blue', 'blue')}:\nRound {turn}: ")
+                    f"{colored_text('black', 'black')} and {colored_text('blue', 'blue')},\ne.g. 'green red pink cyan':"
+                    f"\nRound {turn}: ")
     if u_input == 'quit':
         return u_input
     cleaned_u_input = u_input.split(" ")
@@ -100,7 +96,7 @@ def take_user_input():
     return cleaned_u_input
 
 
-def evaluate_user_input(user_guesses, round_no):
+def evaluate_user_input(user_guesses, round_no, number_of_allowed_tries, code_to_guess):
     round_number = -abs(round_no) + number_of_allowed_tries + 1
     index_counter = 0
     for guess in user_guesses:
@@ -120,28 +116,35 @@ def evaluate_user_input(user_guesses, round_no):
               f"means this color is not in the code")
         sleep(1)
 
-playing_field = []
-playing_field = create_playing_field()
-turn = 1
-code_to_guess = generate_code()
-while game_is_on:
-    print_playing_field()
-    # print(f'Pssst, the solution is: {code_to_guess}')
-    user_input = take_user_input()
-    if user_input == 'quit':
-        game_is_on = False
-    elif user_input != 'invalid':
-        print(f'Received user input {user_input} as valid input.')
-        add_user_input_to_playing_field(turn, user_input)
+
+def main():
+    available_colors = ["green", "yellow", "red", "blue", "pink", "cyan", "white", "black", "blank"]
+    number_of_allowed_tries = 8
+    playing_field = create_playing_field(number_of_allowed_tries)
+    turn = 1
+    code_to_guess = generate_code(available_colors)
+    game_is_on = True
+    while game_is_on:
         print_playing_field()
-        evaluate_user_input(user_input, turn)
-        # Check for win:
-        line_to_check = -abs(turn) + number_of_allowed_tries + 1
-        if "✓-✓-✓-✓" in playing_field[line_to_check]:
-            print('You win! Congratulations!')
+        # print(f'Pssst, the solution is: {code_to_guess}')
+        user_input = take_user_input(available_colors, turn)
+        if user_input == 'quit':
             game_is_on = False
-        turn += 1
-        # Check for loss:
-        if turn > 12:
-            print('You lose! Better luck next time!')
-            game_is_on = False
+        elif user_input != 'invalid':
+            add_user_input_to_playing_field(turn, user_input, number_of_allowed_tries)
+            print_playing_field()
+            evaluate_user_input(user_input, turn, number_of_allowed_tries, code_to_guess)
+            # Check for win:
+            line_to_check = -abs(turn) + number_of_allowed_tries + 1
+            if "✓-✓-✓-✓" in playing_field[line_to_check]:
+                print('You win! Congratulations!')
+                game_is_on = False
+            turn += 1
+            # Check for loss:
+            if turn > 12:
+                print('You lose! Better luck next time!')
+                game_is_on = False
+
+
+playing_field = []
+main()
