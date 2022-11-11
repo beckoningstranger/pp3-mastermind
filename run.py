@@ -40,12 +40,12 @@ def print_playing_field():
         print(line)
 
 
-def generate_code(available_colors):
+def generate_code(available_colors, code_length):
     """
     Doc string
     """
     code = []
-    for _ in range(4):
+    for _ in range(code_length):
         code.append(choice(available_colors))
     return code
 
@@ -79,7 +79,7 @@ def take_user_input(available_colors, turn):
                     f"{colored_text('yellow', 'yellow')}, {colored_text('red', 'red')}, {colored_text('pink', 'pink')},"
                     f" {colored_text('cyan', 'cyan')}, {colored_text('white', 'white')}, "
                     f"{colored_text('black', 'black')} and {colored_text('blue', 'blue')},\ne.g. 'green red pink cyan':"
-                    f"\nRound {turn}: ")
+                    f"\nRound {turn}: ").lower()
     if u_input == 'quit':
         return u_input
     cleaned_u_input = u_input.split(" ")
@@ -102,13 +102,13 @@ def evaluate_user_input(user_guesses, round_no, number_of_allowed_tries, code_to
     for guess in user_guesses:
         if guess == code_to_guess[index_counter]:
             sleep(1)
-            playing_field[round_number] = playing_field[round_number].replace("O", "✓", 1)
+            playing_field[round_number] = playing_field[round_number].replace("O", colored_text("✓", "green"), 1)
         elif guess in code_to_guess:
             sleep(1)
-            playing_field[round_number] = playing_field[round_number].replace("O", "◊", 1)
+            playing_field[round_number] = playing_field[round_number].replace("O", colored_text("◊", "white"), 1)
         else:
             sleep(1)
-            playing_field[round_number] = playing_field[round_number].replace("O", "X", 1)
+            playing_field[round_number] = playing_field[round_number].replace("O", colored_text("X", "red"), 1)
         index_counter += 1
         print_playing_field()
         print(f"Slowly evaluating your input for dramatic effect...\nRemember:\n'✓' means you got position and "
@@ -120,9 +120,10 @@ def evaluate_user_input(user_guesses, round_no, number_of_allowed_tries, code_to
 def main():
     available_colors = ["green", "yellow", "red", "blue", "pink", "cyan", "white", "black", "blank"]
     number_of_allowed_tries = 8
+    code_length = 4
     playing_field = create_playing_field(number_of_allowed_tries)
     turn = 1
-    code_to_guess = generate_code(available_colors)
+    code_to_guess = generate_code(available_colors, code_length)
     game_is_on = True
     while game_is_on:
         print_playing_field()
@@ -136,7 +137,8 @@ def main():
             evaluate_user_input(user_input, turn, number_of_allowed_tries, code_to_guess)
             # Check for win:
             line_to_check = -abs(turn) + number_of_allowed_tries + 1
-            if "✓-✓-✓-✓" in playing_field[line_to_check]:
+            if f'{colored_text("✓", "green")}-{colored_text("✓", "green")}-{colored_text("✓", "green")}-' \
+               f'{colored_text("✓", "green")}' in playing_field[line_to_check]:
                 print('You win! Congratulations!')
                 game_is_on = False
             turn += 1
