@@ -7,10 +7,16 @@ from art import logo, closer, opener
 def create_playing_field(number_of_allowed_tries, code_to_guess):
     playing_field.append(opener)
     for i in range(number_of_allowed_tries, 0, -1):
-        if len(code_to_guess) == 4:
+        if len(code_to_guess) == 3:
+            playing_field.append(f'│ {i:02d}|-----------O----------O----------O-----------│-------O-O-O------- │')
+        elif len(code_to_guess) == 4:
             playing_field.append(f'│ {i:02d}|--------O--------O---------O--------O--------│------O-O-O-O------ │')
         elif len(code_to_guess) == 5:
             playing_field.append(f'│ {i:02d}|------O-------O-------O-------O-------O------│-----O-O-O-O-O----- │')
+        elif len(code_to_guess) == 6:
+            playing_field.append(f'│ {i:02d}|-----O------O------O------O------O-----O-----│----O-O-O-O-O-O---- │')
+        elif len(code_to_guess) == 7:
+            playing_field.append(f'│ {i:02d}|----O-----O-----O-----O-----O-----O-----O----│---O-O-O-O-O-O-O--- │')
     playing_field.append(closer)
     return playing_field
 
@@ -79,16 +85,21 @@ def take_user_input(available_colors, turn, code_to_guess):
                     f"\nRound {turn}: ").lower()
     if u_input == 'quit':
         return u_input
+    if u_input == 'icanseedeadpeople':
+        global cheat_mode
+        cheat_mode = True
+        return "invalid"
     cleaned_u_input = u_input.split(" ")
     for item in cleaned_u_input:
         if item not in available_colors:
             print(f'Sorry, {item} is not a valid color, please try again.')
-            sleep(1)
+            sleep(3)
             return "invalid"
     if len(cleaned_u_input) != len(code_to_guess):
-        print(f'You need to enter exactly 4 colors (blanks are also allowed), but you entered {len(cleaned_u_input)}. '
+        print(f'You need to enter exactly {len(code_to_guess)} colors (blanks are also allowed), '
+              f'but you entered {len(cleaned_u_input)}. '
               f'Please try again.')
-        sleep(1)
+        sleep(3)
         return "invalid"
     return cleaned_u_input
 
@@ -115,16 +126,20 @@ def evaluate_user_input(user_guesses, round_no, number_of_allowed_tries, code_to
 
 
 def main():
+    global cheat_mode
+    global playing_field
     available_colors = ["green", "yellow", "red", "blue", "pink", "cyan", "white", "black", "blank"]
+    cheat_mode = False
     number_of_allowed_tries = 8
-    code_length = 5
+    code_length = 7
     turn = 1
     code_to_guess = generate_code(available_colors, code_length)
     playing_field = create_playing_field(number_of_allowed_tries, code_to_guess)
     game_is_on = True
     while game_is_on:
         print_playing_field()
-        # print(f'Pssst, the solution is: {code_to_guess}')
+        if cheat_mode:
+            print(f'Pssst, the solution is: {code_to_guess}')
         user_input = take_user_input(available_colors, turn, code_to_guess)
         if user_input == 'quit':
             game_is_on = False
@@ -134,17 +149,10 @@ def main():
             evaluate_user_input(user_input, turn, number_of_allowed_tries, code_to_guess)
             # Check for win:
             line_to_check = -abs(turn) + number_of_allowed_tries + 1
-            # Check whether the current evaluation line had the required amount of checkmarks in it
-            if len(code_to_guess) == 4:
-                if f'{colored_text("✓", "green")}-{colored_text("✓", "green")}-{colored_text("✓", "green")}-' \
-                   f'{colored_text("✓", "green")}' in playing_field[line_to_check]:
-                    print('You win! Congratulations!')
-                    game_is_on = False
-            elif len(code_to_guess) == 5:
-                if f'{colored_text("✓", "green")}-{colored_text("✓", "green")}-{colored_text("✓", "green")}-' \
-                   f'{colored_text("✓", "green")}-{colored_text("✓", "green")}' in playing_field[line_to_check]:
-                    print('You win! Congratulations!')
-                    game_is_on = False
+            # Check whether the current evaluation line contains the required amount of checkmarks:
+            if playing_field[line_to_check].count(f'{colored_text("✓", "green")}') == len(code_to_guess):
+                print('You win! Congratulations!')
+                game_is_on = False
             turn += 1
             # Check for loss:
             if turn > 12:
@@ -152,5 +160,6 @@ def main():
                 game_is_on = False
 
 
+cheat_mode = None
 playing_field = []
 main()
