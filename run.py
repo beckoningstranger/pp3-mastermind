@@ -21,6 +21,13 @@ def create_playing_field(number_of_allowed_tries, code_to_guess):
     return playing_field
 
 
+def print_playing_field():
+    system('clear')
+    print(logo)
+    for line in playing_field:
+        print(line)
+
+
 def add_user_input_to_playing_field(rnd, user_inp, number_of_allowed_tries):
     round_number = -abs(rnd) + number_of_allowed_tries + 1
     previous_rnd_number = f'{round_number -1}:02d'
@@ -36,16 +43,9 @@ def formatted_number(color):
         return colored_text("■", color)
 
 
-def print_playing_field():
-    system('clear')
-    print(logo)
-    for line in playing_field:
-        print(line)
-
-
 def generate_code(available_colors, code_length):
     """
-    Doc string
+    Creates a code from the available colors. The length of the code depends on variable code_length.
     """
     code = []
     for _ in range(code_length):
@@ -104,10 +104,10 @@ def take_user_input(available_colors, turn, code_to_guess):
     return cleaned_u_input
 
 
-def evaluate_user_input(user_guesses, round_no, number_of_allowed_tries, code_to_guess):
+def evaluate_user_input(guesses, round_no, number_of_allowed_tries, code_to_guess):
     round_number = -abs(round_no) + number_of_allowed_tries + 1
     index_counter = 0
-    for guess in user_guesses:
+    for guess in guesses:
         if guess == code_to_guess[index_counter]:
             sleep(1)
             playing_field[round_number] = playing_field[round_number].replace("O", colored_text("✓", "green"), 1)
@@ -119,44 +119,54 @@ def evaluate_user_input(user_guesses, round_no, number_of_allowed_tries, code_to
             playing_field[round_number] = playing_field[round_number].replace("O", colored_text("X", "red"), 1)
         index_counter += 1
         print_playing_field()
-        print(f"Slowly evaluating your input for dramatic effect...\nRemember:\n'✓' means you got position and "
-              f"color right\n'◊' means the color is in the code, but it's not in the correct position\n'X' "
-              f"means this color is not in the code")
-        sleep(1)
+        print(f"Remember: '✓' means you got position and color right\n"
+              f"          '◊' means the color is in the code, but it's not in the correct position\n"
+              f"          'X' means this color is not in the code")
+    input("Press Enter to continue...")
 
 
 def main():
-    global cheat_mode
-    global playing_field
     available_colors = ["green", "yellow", "red", "blue", "pink", "cyan", "white", "black", "blank"]
+    global cheat_mode
     cheat_mode = False
-    number_of_allowed_tries = 8
-    code_length = 7
-    turn = 1
+    number_of_allowed_tries = 4
+    code_length = 3
+    current_turn = 1
     code_to_guess = generate_code(available_colors, code_length)
+    global playing_field
     playing_field = create_playing_field(number_of_allowed_tries, code_to_guess)
     game_is_on = True
     while game_is_on:
         print_playing_field()
         if cheat_mode:
-            print(f'Pssst, the solution is: {code_to_guess}')
-        user_input = take_user_input(available_colors, turn, code_to_guess)
+            print(f'Pssst, the solution is: ', end='')
+            for i in code_to_guess:
+                print(colored_text(i, i), end=' ')
+            print()
+        # Allow users to enter their guess or quit the game
+        user_input = take_user_input(available_colors, current_turn, code_to_guess)
         if user_input == 'quit':
             game_is_on = False
+        # If user input is valid, display it on the playing field and evaluate it
         elif user_input != 'invalid':
-            add_user_input_to_playing_field(turn, user_input, number_of_allowed_tries)
+            add_user_input_to_playing_field(current_turn, user_input, number_of_allowed_tries)
             print_playing_field()
-            evaluate_user_input(user_input, turn, number_of_allowed_tries, code_to_guess)
+            evaluate_user_input(user_input, current_turn, number_of_allowed_tries, code_to_guess)
             # Check for win:
-            line_to_check = -abs(turn) + number_of_allowed_tries + 1
+            line_to_check = -abs(current_turn) + number_of_allowed_tries + 1
             # Check whether the current evaluation line contains the required amount of checkmarks:
             if playing_field[line_to_check].count(f'{colored_text("✓", "green")}') == len(code_to_guess):
+                print_playing_field()
                 print('You win! Congratulations!')
                 game_is_on = False
-            turn += 1
+            current_turn += 1
             # Check for loss:
-            if turn > 12:
-                print('You lose! Better luck next time!')
+            if current_turn > number_of_allowed_tries:
+                print_playing_field()
+                print('You have exhausted your maximum number of tries and lose! Better luck next time!')
+                print('The solution was:', end=' ')
+                for i in code_to_guess:
+                    print(colored_text(i, i), end=' ')
                 game_is_on = False
 
 
