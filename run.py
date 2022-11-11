@@ -4,26 +4,23 @@ from time import sleep
 from art import logo, closer, opener
 
 
-def create_playing_field(number_of_allowed_tries):
+def create_playing_field(number_of_allowed_tries, code_to_guess):
     playing_field.append(opener)
     for i in range(number_of_allowed_tries, 0, -1):
-        playing_field.append(f'│ {i:02d}|--------O--------O---------O--------0--------│------O-O-O-O------ │')
+        if len(code_to_guess) == 4:
+            playing_field.append(f'│ {i:02d}|--------O--------O---------O--------O--------│------O-O-O-O------ │')
+        elif len(code_to_guess) == 5:
+            playing_field.append(f'│ {i:02d}|------O-------O-------O-------O-------O------│-----O-O-O-O-O----- │')
     playing_field.append(closer)
     return playing_field
 
 
 def add_user_input_to_playing_field(rnd, user_inp, number_of_allowed_tries):
-    first_color = user_inp[0]
-    second_color = user_inp[1]
-    third_color = user_inp[2]
-    fourth_color = user_inp[3]
-    spacer6 = '------'
-    spacer8 = '--------'
-    spacer9 = '---------'
     round_number = -abs(rnd) + number_of_allowed_tries + 1
-    playing_field[round_number] = f"| {rnd:02d}|{spacer8}{formatted_number(first_color)}{spacer8}" \
-                                  f"{formatted_number(second_color)}{spacer9}{formatted_number(third_color)}{spacer8}" \
-                                  f"{formatted_number(fourth_color)}{spacer8}|{spacer6}O-O-O-O{spacer6} |"
+    previous_rnd_number = f'{round_number -1}:02d'
+    playing_field[round_number] = playing_field[round_number].replace(previous_rnd_number, f'{round_number}:02d', 1)
+    for i in user_inp:
+        playing_field[round_number] = playing_field[round_number].replace("O", formatted_number(i), 1)
 
 
 def formatted_number(color):
@@ -73,7 +70,7 @@ def colored_text(text, color):
     return color + text + '\x1b[39m'
 
 
-def take_user_input(available_colors, turn):
+def take_user_input(available_colors, turn, code_to_guess):
     u_input = input(f"Enter a color combination (blanks are allowed) or 'quit' to stop playing.\n"
                     f"Valid are 'blank', {colored_text('green', 'green')}, "
                     f"{colored_text('yellow', 'yellow')}, {colored_text('red', 'red')}, {colored_text('pink', 'pink')},"
@@ -88,7 +85,7 @@ def take_user_input(available_colors, turn):
             print(f'Sorry, {item} is not a valid color, please try again.')
             sleep(1)
             return "invalid"
-    if len(cleaned_u_input) != 4:
+    if len(cleaned_u_input) != len(code_to_guess):
         print(f'You need to enter exactly 4 colors (blanks are also allowed), but you entered {len(cleaned_u_input)}. '
               f'Please try again.')
         sleep(1)
@@ -120,15 +117,15 @@ def evaluate_user_input(user_guesses, round_no, number_of_allowed_tries, code_to
 def main():
     available_colors = ["green", "yellow", "red", "blue", "pink", "cyan", "white", "black", "blank"]
     number_of_allowed_tries = 8
-    code_length = 4
-    playing_field = create_playing_field(number_of_allowed_tries)
+    code_length = 5
     turn = 1
     code_to_guess = generate_code(available_colors, code_length)
+    playing_field = create_playing_field(number_of_allowed_tries, code_to_guess)
     game_is_on = True
     while game_is_on:
         print_playing_field()
         # print(f'Pssst, the solution is: {code_to_guess}')
-        user_input = take_user_input(available_colors, turn)
+        user_input = take_user_input(available_colors, turn, code_to_guess)
         if user_input == 'quit':
             game_is_on = False
         elif user_input != 'invalid':
@@ -137,10 +134,17 @@ def main():
             evaluate_user_input(user_input, turn, number_of_allowed_tries, code_to_guess)
             # Check for win:
             line_to_check = -abs(turn) + number_of_allowed_tries + 1
-            if f'{colored_text("✓", "green")}-{colored_text("✓", "green")}-{colored_text("✓", "green")}-' \
-               f'{colored_text("✓", "green")}' in playing_field[line_to_check]:
-                print('You win! Congratulations!')
-                game_is_on = False
+            # Check whether the current evaluation line had the required amount of checkmarks in it
+            if len(code_to_guess) == 4:
+                if f'{colored_text("✓", "green")}-{colored_text("✓", "green")}-{colored_text("✓", "green")}-' \
+                   f'{colored_text("✓", "green")}' in playing_field[line_to_check]:
+                    print('You win! Congratulations!')
+                    game_is_on = False
+            elif len(code_to_guess) == 5:
+                if f'{colored_text("✓", "green")}-{colored_text("✓", "green")}-{colored_text("✓", "green")}-' \
+                   f'{colored_text("✓", "green")}-{colored_text("✓", "green")}' in playing_field[line_to_check]:
+                    print('You win! Congratulations!')
+                    game_is_on = False
             turn += 1
             # Check for loss:
             if turn > 12:
