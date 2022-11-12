@@ -183,14 +183,35 @@ def next_game():
         next_game()
 
 
-def mastermind():
+def explain_the_game():
+    """
+    Placeholder Doc String
+    """
+    system('clear')
+    print(LOGO)
+    print("I'll add more details here, later.")
+    input("Press Enter to continue...")
+
+
+def gather_game_params():
+    """
+    Placeholder Doc String
+    """
+    system('clear')
+    print(LOGO)
+    code_length = int(input("How long do you want the color"
+                            " code to be? (3-7) "))
+    number_of_allowed_tries = int(input("How many tries are allowed before "
+                                        "you lose? (4-12) "))
+    return code_length, number_of_allowed_tries
+
+
+def start_game(code_length, number_of_allowed_tries):
     """
     Placeholder Doc String
     """
     global cheat_mode
     cheat_mode = False
-    number_of_allowed_tries = 4
-    code_length = 3
     current_turn = 1
     code_to_guess = generate_code(code_length)
     global playing_field
@@ -239,6 +260,7 @@ def mastermind():
                     print(colored_text(i, i), end=' ')
                 print('')
                 game_is_on = False
+    next_game()
 
 
 def main():
@@ -247,9 +269,18 @@ def main():
     """
     global keep_playing
     keep_playing = True
+    explain_the_game()
     while keep_playing:
-        mastermind()
-        next_game()
+        game_parameters = gather_game_params()
+        given_code_length = game_parameters[0]
+        given_amount_of_tries = game_parameters[1]
+        if given_code_length in range(3, 8) and \
+                given_amount_of_tries in range(4, 13):
+            start_game(given_code_length, given_amount_of_tries)
+        else:
+            print('The given game parameters are not within legal limits! '
+                  'Please try again.')
+            sleep(2)
 
 
 main()
