@@ -1,11 +1,10 @@
 from random import choice
 from os import system
 from time import sleep
-from art import logo, closer, opener
+from art import logo, closer
 
 
 def create_playing_field(number_of_allowed_tries, code_to_guess):
-    playing_field.append(opener)
     for i in range(number_of_allowed_tries, 0, -1):
         if len(code_to_guess) == 3:
             playing_field.append(f'│ {i:02d}|-----------O----------O----------O-----------│-------O-O-O------- │')
@@ -17,7 +16,6 @@ def create_playing_field(number_of_allowed_tries, code_to_guess):
             playing_field.append(f'│ {i:02d}|-----O------O------O------O------O-----O-----│----O-O-O-O-O-O---- │')
         elif len(code_to_guess) == 7:
             playing_field.append(f'│ {i:02d}|----O-----O-----O-----O-----O-----O-----O----│---O-O-O-O-O-O-O--- │')
-    playing_field.append(closer)
     return playing_field
 
 
@@ -26,21 +24,15 @@ def print_playing_field():
     print(logo)
     for line in playing_field:
         print(line)
+    print(closer)
 
 
 def add_user_input_to_playing_field(rnd, user_inp, number_of_allowed_tries):
-    round_number = -abs(rnd) + number_of_allowed_tries + 1
+    round_number = -abs(rnd) + number_of_allowed_tries
     previous_rnd_number = f'{round_number -1}:02d'
     playing_field[round_number] = playing_field[round_number].replace(previous_rnd_number, f'{round_number}:02d', 1)
-    for i in user_inp:
-        playing_field[round_number] = playing_field[round_number].replace("O", formatted_number(i), 1)
-
-
-def formatted_number(color):
-    if color == "blank":
-        return colored_text(" ", color)
-    else:
-        return colored_text("■", color)
+    for color in user_inp:
+        playing_field[round_number] = playing_field[round_number].replace("O", colored_text("■", color), 1)
 
 
 def generate_code(available_colors, code_length):
@@ -69,6 +61,7 @@ def colored_text(text, color):
             color = '\x1b[94m'
         case "blank":
             color = '\x1b[39m'
+            text = ' '
         case "black":
             color = '\x1b[90m'
         case "white":
@@ -105,7 +98,7 @@ def take_user_input(available_colors, turn, code_to_guess):
 
 
 def evaluate_user_input(guesses, round_no, number_of_allowed_tries, code_to_guess):
-    round_number = -abs(round_no) + number_of_allowed_tries + 1
+    round_number = -abs(round_no) + number_of_allowed_tries
     index_counter = 0
     for guess in guesses:
         if guess == code_to_guess[index_counter]:
@@ -120,7 +113,7 @@ def evaluate_user_input(guesses, round_no, number_of_allowed_tries, code_to_gues
         index_counter += 1
         print_playing_field()
         print(f"Remember: '✓' means you got position and color right\n"
-              f"          '◊' means the color is in the code, but it's not in the correct position\n"
+              f"          '◊' means the color is in the code, the position is incorrect.\n"
               f"          'X' means this color is not in the code")
     input("Press Enter to continue...")
 
@@ -153,7 +146,7 @@ def main():
             print_playing_field()
             evaluate_user_input(user_input, current_turn, number_of_allowed_tries, code_to_guess)
             # Check for win:
-            line_to_check = -abs(current_turn) + number_of_allowed_tries + 1
+            line_to_check = -abs(current_turn) + number_of_allowed_tries
             # Check whether the current evaluation line contains the required amount of checkmarks:
             if playing_field[line_to_check].count(f'{colored_text("✓", "green")}') == len(code_to_guess):
                 print_playing_field()
