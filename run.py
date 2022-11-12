@@ -32,7 +32,10 @@ def add_user_input_to_playing_field(rnd, user_inp, number_of_allowed_tries):
     previous_rnd_number = f'{round_number -1}:02d'
     playing_field[round_number] = playing_field[round_number].replace(previous_rnd_number, f'{round_number}:02d', 1)
     for color in user_inp:
-        playing_field[round_number] = playing_field[round_number].replace("O", colored_text("■", color), 1)
+        if color == "blank":
+            playing_field[round_number] = playing_field[round_number].replace("O", " ", 1)
+        else:
+            playing_field[round_number] = playing_field[round_number].replace("O", colored_text("■", color), 1)
 
 
 def generate_code(available_colors, code_length):
@@ -61,7 +64,6 @@ def colored_text(text, color):
             color = '\x1b[94m'
         case "blank":
             color = '\x1b[39m'
-            text = ' '
         case "black":
             color = '\x1b[90m'
         case "white":
@@ -78,7 +80,7 @@ def take_user_input(available_colors, turn, code_to_guess):
                     f"\nRound {turn}: ").lower()
     if u_input == 'quit':
         return u_input
-    if u_input == 'icanseedeadpeople':
+    if u_input == 'iseedeadpeople':
         global cheat_mode
         cheat_mode = True
         return "invalid"
@@ -118,6 +120,16 @@ def evaluate_user_input(guesses, round_no, number_of_allowed_tries, code_to_gues
     input("Press Enter to continue...")
 
 
+def next_game():
+    new_game = input('Would you like to play again? (y/n)')
+    if new_game == "y":
+        return True
+    elif new_game == "n":
+        return False
+    else:
+        next_game()
+
+
 def main():
     available_colors = ["green", "yellow", "red", "blue", "pink", "cyan", "white", "black", "blank"]
     global cheat_mode
@@ -140,7 +152,7 @@ def main():
         user_input = take_user_input(available_colors, current_turn, code_to_guess)
         if user_input == 'quit':
             game_is_on = False
-        # If user input is valid, display it on the playing field and evaluate it
+        # If user input is not 'quit' and valid, display it on the playing field and evaluate it
         elif user_input != 'invalid':
             add_user_input_to_playing_field(current_turn, user_input, number_of_allowed_tries)
             print_playing_field()
@@ -152,7 +164,11 @@ def main():
                 print_playing_field()
                 print('You win! Congratulations!')
                 game_is_on = False
-            current_turn += 1
+                sleep(2)
+            else:
+                print(playing_field[line_to_check].count(f'{colored_text("✓", "green")}'))
+                current_turn += 1
+                sleep(2)
             # Check for loss:
             if current_turn > number_of_allowed_tries:
                 print_playing_field()
@@ -160,9 +176,20 @@ def main():
                 print('The solution was:', end=' ')
                 for i in code_to_guess:
                     print(colored_text(i, i), end=' ')
+                print('')
                 game_is_on = False
 
 
-cheat_mode = None
+cheat_mode = False
 playing_field = []
-main()
+keep_playing = True
+while keep_playing:
+    main()
+    if next_game():
+        cheat_mode = False
+        playing_field = []
+        main()
+    else:
+        print_playing_field()
+        print('Have a great day! See you next time!')
+        keep_playing = False
