@@ -1,5 +1,8 @@
 """
-Placeholder Doc String
+In this game, the computer creates a color code that the player has to guess.
+After each guessing round, the computer generates feedback that the player can
+use to improve his guess until he gets the color combination or runs out of
+tries.
 """
 from random import choice
 from os import system
@@ -13,12 +16,12 @@ AVAILABLE_COLORS = ["green", "yellow", "red", "blue", "pink",
 
 def create_playing_field(number_of_allowed_tries, code_to_guess):
     """
-    Placeholder Doc String
+    Takes how many tries user has and how long the code is, then
+    creates a list of strings that makes of the playing field.
+    To make the last try appear on top of the list, it steps through
+    the range from first to last try in reverse order.
     """
     p_f = []
-    # Create a list of strings that makes of the playing field.
-    # To make the last try appear on top of the list, step through
-    # the range from first to last try in reverse order.
     for i in range(number_of_allowed_tries, 0, -1):
         if len(code_to_guess) == 3:
             p_f.append(f'│ {i:02d}|-----------O----------O----------O---------'
@@ -112,7 +115,7 @@ def take_user_input(turn, code_to_guess):
     Checks if user input is formatted correctly and loops back if it is not.
     """
     u_input = input(f"Enter a color combination (blanks are allowed) or 'quit'"
-                    f" to stop this game.\nValid are blank, "
+                    f" to quit this game.\nValid are blank, "
                     f"{colored_text('green', 'green')}, "
                     f"{colored_text('yellow', 'yellow')}, "
                     f"{colored_text('red', 'red')}, "
@@ -121,7 +124,8 @@ def take_user_input(turn, code_to_guess):
                     f"{colored_text('white', 'white')}, "
                     f"{colored_text('black', 'black')} and "
                     f"{colored_text('blue', 'blue')},\n"
-                    f"e.g. 'green red pink cyan':"
+                    f"e.g. 'green blank pink cyan' or 'red black white'"
+                    f"without the quotation marks:"
                     f"\nRound {turn}: ").lower()
     if u_input == 'quit':
         return u_input
@@ -129,11 +133,11 @@ def take_user_input(turn, code_to_guess):
         global cheat_mode
         cheat_mode = True
         return "invalid"
-    cleaned_u_input = u_input.split(" ")
+    cleaned_u_input = u_input.split()
     for item in cleaned_u_input:
         if item not in AVAILABLE_COLORS:
             print_playing_field()
-            print(f'Sorry, {item} is not a valid color, please try again.')
+            print(f"Sorry, '{item}' is not a valid color, please try again.")
             sleep(3)
             return "invalid"
     if len(cleaned_u_input) != len(code_to_guess):
@@ -172,6 +176,10 @@ def evaluate_user_input(guesses, round_no, allowed_tries, code_to_guess):
                 .replace("O", colored_text("X", "red"), 1)
         index_counter += 1
         print_playing_field()
+        print('You entered: ', end='')
+        for guess in guesses:
+            print(f"{colored_text(guess, guess)} ", end='')
+        print()
         print("Remember: '✓' means you got position and color right\n"
               "          '◊' means the color is in the code, the position is"
               " incorrect.\n"
@@ -187,6 +195,7 @@ def next_game():
     global keep_playing
     new_game = input('Would you like to play again? (y/n)')
     if new_game == "y":
+        system('clear')
         return
     elif new_game == "n":
         print_playing_field()
@@ -194,6 +203,8 @@ def next_game():
         keep_playing = False
         return
     else:
+        print_playing_field()
+        print("Invalid input, please enter either 'y' or 'n'.")
         next_game()
 
 
@@ -221,29 +232,39 @@ def explain_the_game():
     the computer. Also, you can pick how long the color code should be\n\
     and how many tries you have before you lose, but otherwise the rules\n\
     are the same. Duplicate colors are allowed and the code may also\n\
-    include blanks. Theoretically, it's possible to make a code that\n\
-    is entirely made up of blanks.\n\n\
+    include blanks. Theoretically, it's possible that the code is entirely\n\
+    made up of blanks.\n\
     ")
     input("\
     Enjoy playing! Press Enter to continue...")
+    system('clear')
 
 
 def gather_game_params():
     """
-    Placeholder Doc String
+    Here, the users sets how long the colors code will be and how many tries
+    he has to guess the code.
     """
-    system('clear')
     print(LOGO)
-    code_length = int(input("How long do you want the color"
-                            " code to be? (3-7) "))
-    number_of_allowed_tries = int(input("How many tries are allowed before "
-                                        "you lose? (4-11) "))
-    return code_length, number_of_allowed_tries 
+    number_of_allowed_tries = 0
+    try:
+        code_length = int(input("How long do you want the color code "
+                                "to be? (3-7) "))
+    except ValueError:
+        code_length = 0
+    if code_length != 0:
+        try:
+            number_of_allowed_tries = int(input("How many tries are allowed "
+                                                "before you lose? (4-10) "))
+        except ValueError:
+            number_of_allowed_tries = 0
+    return code_length, number_of_allowed_tries
 
 
 def start_game(code_length, number_of_allowed_tries):
     """
-    Placeholder Doc String
+    This takes how long the code is and how many tries the user has
+    before he loses and then manages the whole game.
     """
     global cheat_mode
     cheat_mode = False
@@ -263,6 +284,7 @@ def start_game(code_length, number_of_allowed_tries):
         # Allow users to enter their guess or quit the game
         user_input = take_user_input(current_turn, code_to_guess)
         if user_input == 'quit':
+            print_playing_field()
             game_is_on = False
         # If user input is not 'quit' and valid, display it on the playing
         # field and evaluate it
@@ -293,14 +315,15 @@ def start_game(code_length, number_of_allowed_tries):
                 print('The solution was:', end=' ')
                 for i in code_to_guess:
                     print(colored_text(i, i), end=' ')
-                print('')
+                print()
                 game_is_on = False
     next_game()
 
 
 def main():
     """
-    Placeholder Doc String
+    This explains the game, asks for game parameters and then starts the game
+    after which it will ask whether the user wants to play again.
     """
     global keep_playing
     keep_playing = True
@@ -310,12 +333,12 @@ def main():
         given_code_length = game_parameters[0]
         given_amount_of_tries = game_parameters[1]
         if given_code_length in range(3, 8) and \
-                given_amount_of_tries in range(4, 12):
+                given_amount_of_tries in range(4, 11):
             start_game(given_code_length, given_amount_of_tries)
         else:
-            print('\nThe given game parameters are not within legal limits! '
-                  'Please try again.')
+            print('Invalid input, please try again!')
             sleep(2)
+            system('clear')
 
 
 main()
