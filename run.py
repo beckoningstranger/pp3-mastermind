@@ -216,12 +216,11 @@ def explain_the_game():
     print("\
     Welcome to Mastermind!\n\n\
     Mastermind was a popular board game in the 70ies and 80ies, where\n\
-    one player ('the codemaker') picks 4-5 colors (or blanks) to\n\
-    make up a code that the other player ('the codebreaker') tries to\n\
-    guess. This is done by entering a color code per round, after every\n\
-    one of which the codemaker gives feedback on the entered code.\n\
-    This feedback gives the codebreaker the information they need to\n\
-    eventually find out the code and win or run out of tries and lose.\n\n\
+    one player picks 4-5 colors (or blanks) to make up a code that the\n\
+    other player tries to guess. This is done by entering a color code per\n\
+    round, after every one of which the codemaker gives feedback on the\n\
+    entered code. This feedback gives the codebreaker the information they\n\
+    need to find out the code and win or run out of tries and lose.\n\n\
     For each color that the codebreaker gets right _and_ that he also put \n\
     in the correct spot, the codemaker places a black key peg on the\n\
     board. For each color that is not in the correct spot, but which is\n\
