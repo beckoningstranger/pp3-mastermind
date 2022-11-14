@@ -16,6 +16,9 @@ def create_playing_field(number_of_allowed_tries, code_to_guess):
     Placeholder Doc String
     """
     p_f = []
+    # Create a list of strings that makes of the playing field.
+    # To make the last try appear on top of the list, step through
+    # the range from first to last try in reverse order.
     for i in range(number_of_allowed_tries, 0, -1):
         if len(code_to_guess) == 3:
             p_f.append(f'│ {i:02d}|-----------O----------O----------O---------'
@@ -37,7 +40,8 @@ def create_playing_field(number_of_allowed_tries, code_to_guess):
 
 def print_playing_field():
     """
-    Placeholder Doc String
+    Print out the playing field by having the logo at the top and then
+    printing every line of the list that contains the playing field.
     """
     system('clear')
     print(LOGO)
@@ -48,7 +52,8 @@ def print_playing_field():
 
 def add_user_input_to_playing_field(rnd, user_inp, number_of_allowed_tries):
     """
-    Placeholder Doc String
+    Modify the string that holds the information for this turn so that
+    the colors the user entered will appear on the playing field.
     """
     round_number = -abs(rnd) + number_of_allowed_tries
     previous_rnd_number = f'{round_number -1}:02d'
@@ -77,7 +82,8 @@ def generate_code(code_length):
 
 def colored_text(text, color):
     """
-    Placeholder Doc String
+    This allows to output colored text by attaching the codes belows
+    in front of the text. The last code resets the color.
     """
     if color == "yellow":
         color = '\x1b[93m'
@@ -102,10 +108,11 @@ def colored_text(text, color):
 
 def take_user_input(turn, code_to_guess):
     """
-    Placeholder Doc String
+    Instructs the user about his options and how valid input is formatted.
+    Checks if user input is formatted correctly and loops back if it is not.
     """
     u_input = input(f"Enter a color combination (blanks are allowed) or 'quit'"
-                    f" to stop this game.\nValid are 'blank', "
+                    f" to stop this game.\nValid are blank, "
                     f"{colored_text('green', 'green')}, "
                     f"{colored_text('yellow', 'yellow')}, "
                     f"{colored_text('red', 'red')}, "
@@ -125,12 +132,14 @@ def take_user_input(turn, code_to_guess):
     cleaned_u_input = u_input.split(" ")
     for item in cleaned_u_input:
         if item not in AVAILABLE_COLORS:
+            print_playing_field()
             print(f'Sorry, {item} is not a valid color, please try again.')
             sleep(3)
             return "invalid"
     if len(cleaned_u_input) != len(code_to_guess):
+        print_playing_field()
         print(f'You need to enter exactly {len(code_to_guess)} '
-              f'colors (blanks are also allowed), '
+              f'colors (blanks are also allowed),\n'
               f'but you entered {len(cleaned_u_input)}. '
               f'Please try again.')
         sleep(3)
@@ -140,20 +149,24 @@ def take_user_input(turn, code_to_guess):
 
 def evaluate_user_input(guesses, round_no, allowed_tries, code_to_guess):
     """
-    Placeholder Doc String
+    Does what the codemaker would do when it is his turn. Puts key pegs
+    on the board for every color the codebreaker has guessed.
     """
     round_number = -abs(round_no) + allowed_tries
     index_counter = 0
     for guess in guesses:
+        # Check if color is correct AND in correct place. If so, put a green ✓
         if guess == code_to_guess[index_counter]:
             sleep(1)
             playing_field[round_number] = playing_field[round_number]\
                 .replace("O", colored_text("✓", "green"), 1)
         elif guess in code_to_guess:
+            # Check if color is anywhere in the code. If so, put a white ◊
             sleep(1)
             playing_field[round_number] = playing_field[round_number]\
                 .replace("O", colored_text("◊", "white"), 1)
         else:
+            # If neither of the two above, put a red X
             sleep(1)
             playing_field[round_number] = playing_field[round_number]\
                 .replace("O", colored_text("X", "red"), 1)
@@ -168,7 +181,8 @@ def evaluate_user_input(guesses, round_no, allowed_tries, code_to_guess):
 
 def next_game():
     """
-    Placeholder Doc String
+    Asks the user if they would like to play again.
+    If user enters anything but "y" or "n", it loops back.
     """
     global keep_playing
     new_game = input('Would you like to play again? (y/n)')
@@ -185,12 +199,33 @@ def next_game():
 
 def explain_the_game():
     """
-    Placeholder Doc String
+    This explanatin of the game is shown to the user after he starts the game.
     """
     system('clear')
-    print(LOGO)
-    print("I'll add more details here, later.")
-    input("Press Enter to continue...")
+    print("\
+    Welcome to Mastermind!\n\n\
+    Mastermind was a popular board game in the 70ies and 80ies, where\n\
+    one player ('the codemaker') picks 4-5 colors (or blanks) to\n\
+    make up a code that the other player ('the codebreaker') tries to\n\
+    guess. This is done by entering a color code per round, after every\n\
+    one of which the codemaker gives feedback on the entered code.\n\
+    This feedback gives the codebreaker the information they need to\n\
+    eventually find out the code and win or run out of tries and lose.\n\n\
+    For each color that the codebreaker gets right _and_ that he also put \n\
+    in the correct spot, the codemaker places a black key peg on the\n\
+    board. For each color that is not in the correct spot, but which is\n\
+    in the code at another position, the codemaker places a white\n\
+    key peg.\n\n\
+    In this game, the key pegs are replaced by green checkmarks\n\
+    and white rhombi, and of course the codemaker is played entirely by\n\
+    the computer. Also, you can pick how long the color code should be\n\
+    and how many tries you have before you lose, but otherwise the rules\n\
+    are the same. Duplicate colors are allowed and the code may also\n\
+    include blanks. Theoretically, it's possible to make a code that\n\
+    is entirely made up of blanks.\n\n\
+    ")
+    input("\
+    Enjoy playing! Press Enter to continue...")
 
 
 def gather_game_params():
@@ -202,8 +237,8 @@ def gather_game_params():
     code_length = int(input("How long do you want the color"
                             " code to be? (3-7) "))
     number_of_allowed_tries = int(input("How many tries are allowed before "
-                                        "you lose? (4-12) "))
-    return code_length, number_of_allowed_tries
+                                        "you lose? (4-11) "))
+    return code_length, number_of_allowed_tries 
 
 
 def start_game(code_length, number_of_allowed_tries):
@@ -275,10 +310,10 @@ def main():
         given_code_length = game_parameters[0]
         given_amount_of_tries = game_parameters[1]
         if given_code_length in range(3, 8) and \
-                given_amount_of_tries in range(4, 13):
+                given_amount_of_tries in range(4, 12):
             start_game(given_code_length, given_amount_of_tries)
         else:
-            print('The given game parameters are not within legal limits! '
+            print('\nThe given game parameters are not within legal limits! '
                   'Please try again.')
             sleep(2)
 
