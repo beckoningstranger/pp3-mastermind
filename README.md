@@ -24,9 +24,14 @@ Take a look at the deployed website: <a href="https://pp3-mastermind.herokuapp.c
     * [Future Implementations](#future-implementations)
 * [Technologies Used](#technologies-used)
   * [Languages Used](#languages-used)
+  * [Python Modules Used](#python-modules-used)
   * [Frameworks, Libraries & Programs Used](#frameworks-libraries--programs-used)
 * [Testing](#testing)
   * [Testing User Stories](#testing-user-stories)
+  * [Manual Testing](#manual-testing)
+  * [Browser compatibility]()
+  * [Lighthouse Testing]()
+  * [Python PEP8 Code Validation]()
   * [Solved Bugs](#solved-bugs)
   * [Known Bugs](#known-bugs)
 * [Deployment](#deployment)
@@ -114,6 +119,12 @@ Take a look at the deployed website: <a href="https://pp3-mastermind.herokuapp.c
 
   * Python
 
+## Python Modules Used
+
+  * [random](https://docs.python.org/3/library/random.html), for its choice function that I use to randomly generate the color codes
+  * [os](https://docs.python.org/3/library/os.html), for it's clear function that allows me to clear the screen
+  * [time](https://docs.python.org/3/library/time.html), for it's sleep function. This is used when error messages are displayed (e.g. invalid input) but also for dramatic effect when the player's guesses are evaluated
+
 ## Frameworks, Libraries & Programs Used
 
   * [Git](https://git-scm.com/) - For version control
@@ -146,6 +157,28 @@ Take a look at the deployed website: <a href="https://pp3-mastermind.herokuapp.c
 
     --> This is done by printing a visual representation of the board to the terminal, with colored output where it makes things easier to read.
 
+## Manual Testing
+
+  * I play tested the game extensively. As this is a quite simple game, there are only a few places where problems can occur due to user input. 
+  
+  * In fact, there are only 5 places in the code where users are required to provide input, two of which are simple 'Press Enter to continue' messages where users may press other buttons, but this input is not assigned to anything or processed anywhere, so it will not result in errors:
+  ```py
+  input("Press Enter to continue...")
+  ```
+
+  * The other instances of user input were thorougly tested. After fixing obvious issues (c.f. [solved bugs](#solved-bugs)) I can no longer make the game crash or behave in any other way but the intended one.
+  ![Input errors when settings game parameters](/assets/readme-images/)
+
+  * The game correctly triggers winning and losing behavior, no matter the code length or number of allowed tries.
+
+  * Quitting game by entering 'quit' works as intended.
+
+  * After starting a game, users can seperate the colors in their input with one or more spaces, just as intended.
+
+  * Activating cheat mode works and shows the correct code.
+
+  * Starting new games after winning or losing works.
+
 ## Solved Bugs
 
   * At an early stage of development the evaluation checkmarks, rhombi and 'X's weren't colored. When I eventually changed that the game would not detect wins anymore because instead of
@@ -158,7 +191,21 @@ Take a look at the deployed website: <a href="https://pp3-mastermind.herokuapp.c
 
   * There were a couple of issues when I wanted to add the possibility to start new games after winning or losing, before the game simply exited. A Code Institute mentor pointed out that I did not simply call main() at the end of my code and that had loops in place where main() could be called from two different points.  
     \
-  At this point the function that's now play_game() was my main() and I had more code at the root level. Renaming my main() to play_game(), wrapping the code that was not part of any functions into main() and fixing how I called main() solved the problem.
+  At that point the function that's now play_game() was my main() and there was more code at the root level. Renaming my main() to play_game(), wrapping the code that was not part of any functions into main() and only calling main() once, at the very end of the file, solved the problem.
+
+  * There were multiple issues where the game would exit unexpectedly because I had not implemented good input validation. One example is when the game asks how long the generated code is supposed to be it would throw value and type errors when the user would enter letters because the input is immediately processed by the int() function. This was solved with try and except:
+    ```py
+    try:
+        code_length = int(input("How long do you want the color code "
+                                "to be? (3-7) "))
+        # try will catch input that's a string or multiple numbers, but not
+        # numbers that are outside the specified range. This if-statement will.
+        if code_length <= 2 or code_length >= 8:
+            code_length = "error"
+    except (TypeError, ValueError):
+        code_length = "error"
+    ```
+    It later checks whether any of the input is equal to "error" and loops back if it is.
 
 ## Known Bugs
 

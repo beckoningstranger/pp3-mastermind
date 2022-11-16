@@ -112,7 +112,8 @@ def colored_text(text, color):
 def take_user_input(turn, code_to_guess):
     """
     Instructs the user about his options and how valid input is formatted.
-    Checks if user input is formatted correctly and loops back if it is not.
+    Takes and cleans user input and checks if it is formatted correctly.
+    Returns "invalid" if it is not and the cleaned input if it is.
     """
     u_input = input(f"Enter a color combination (blanks are allowed) or 'quit'"
                     f" to quit this game.\nValid are blank, "
@@ -156,7 +157,7 @@ def take_user_input(turn, code_to_guess):
 
 def evaluate_user_input(guesses, round_no, allowed_tries, code_to_guess):
     """
-    Does what the codemaker would do when it is his turn. Puts key pegs
+    Does what the codemaker would do when it is their turn. Puts key pegs
     on the board for every color the codebreaker has guessed.
     """
     round_number = -abs(round_no) + allowed_tries
@@ -195,8 +196,7 @@ def evaluate_user_input(guesses, round_no, allowed_tries, code_to_guess):
 
 def next_game():
     """
-    Asks the user if they would like to play again.
-    If user enters anything but "y" or "n", it loops back.
+    Asks the user whether they would like to play again.
     """
     global keep_playing
     new_game = input('Would you like to play again? (y/n)')
