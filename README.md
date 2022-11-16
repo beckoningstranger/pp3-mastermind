@@ -16,24 +16,21 @@ Take a look at the deployed website: <a href="https://pp3-mastermind.herokuapp.c
     * [Typography](#typography)
 * [Features](#features)
   * [Existing Features](#existing-features)
+    * [Explanations Screen](#game-explanations)
     * [Random Color Code Generation](#random-color-code-generation)
-    * [Main Menu](#main-menu)
-    * [Difficulty Menu](#difficulty-menu)
-    * [Customize Difficulty Settings Menu](#customize-difficulty-settings-menu)
-    * [How to Play Section](#how-to-play-section)
-    * [Settings Menu](#settings-menu)
-    * [Playing Field](#playing-field)
+    * [Custom Difficulty Settings](#custom-difficulty-settings)
+    * [Player Mode Evaluation](#player-move-evaluation)
+    * [Cheat Mode](#cheat-mode)
     * [Future Implementations](#future-implementations)
-      * [Reveal zero squares automatically](#reveal-zero-squares-automatically)
-      * [Leaderboards](#leaderboards)
-      * [Statistics](#statistics)
-  * [Accessibility](#accessibility)
 * [Technologies Used](#technologies-used)
   * [Languages Used](#languages-used)
   * [Frameworks, Libraries & Programs Used](#frameworks-libraries--programs-used)
 * [Testing](#testing)
+  * [Testing User Stories](#testing-user-stories)
+  * [Solved Bugs](#solved-bugs)
+  * [Known Bugs](#known-bugs)
 * [Deployment](#deployment)
-  * [How to Deploy the Project on GitHub Pages](#how-to-deploy-the-project-on-github-pages)
+  * [How to Deploy the Project on Heroku](#how-to-deploy-the-project-on-heroku)
   * [How to Fork the Repository on GitHub](#how-to-fork-the-repository-on-github)
   * [How to Clone the Repository on GitHub](#how-to-clone-the-repository-on-github)
 * [Credits](#credits)
@@ -79,7 +76,7 @@ Take a look at the deployed website: <a href="https://pp3-mastermind.herokuapp.c
 
 * The game starts with a short explanation of what it is and how it works.
 
-
+  ![Explanations](/assets/readme-images/explanation.png)
 
 ### Random Color Code Generation
 
@@ -89,91 +86,25 @@ Take a look at the deployed website: <a href="https://pp3-mastermind.herokuapp.c
 
   * The player can customize the difficulty of the game by setting the code length from 3-7 colors and the number of tries to a number between 4 and 10.
 
-  ![Main Menu](/assets/readme-images/main_menu.jpg)
+  ![Main Menu](/assets/readme-images/difficulty.png)
+
+### Player Move Evaluation
+
+  * Once the player enters his guesses the game automatically provides feedback by printing checkmarks, rhombi and Xs on the board.
+
+### Cheat Mode
+
+  * This was created mainly for testing purposes, but players can enter a cheat code (iseedeadpeople) to reveal the color code. In Warcraft III, this cheat code reveals the map.
+
+  ![Cheat Mode](/assets/readme-images/cheatmode.png)
 
 [Back to top](<#contents>)
-
-### Difficulty Menu
-
-  * In this menu users can pick the difficulty level of their choice, navigate to the customize difficulty settings menu or go back to the main menu.
-
-    ![Difficulty Menu](/assets/readme-images/difficulty_menu.jpg)
-
-  * On viewports with less than 1024px width, the hard and custom difficulty options are hidden. Hard would definitely break the layout and custom options have a high chance of doing that as well, as narrow viewports can't handle more than 8 columns of squares. Beginners will be satisfied with the lower difficulty levels.
-
-    ![Difficulty Menu with hidden options](/assets/readme-images/diff_options_hidden.jpg)
-
-  [Back to top](<#contents>)  
-
-### Customize Difficulty Settings Menu
-
-  * Here users can customize the playing field by adjusting the parameters of its height and width. 
-  * They can also configure the number of mines that will be in the playing field.
-  * After they are done, they can start the game by clicking the 'Start Playing' button.
-  * If they would rather pick one of the pre-defined settings, they can go back to the main menu and restart from there.
-
-  ![Customize Difficulty Settings Page](/assets/readme-images/custom_difficulty.jpg)
-
-  [Back to top](<#contents>)
-
-### How To Play Section
-
-  * Here users can learn what Minesweeper is and how to play the game.
-
-  * The two clickable buttons at the top of the playing field are also briefly explained. They are the only elements that are not completely straightforward.
-
-  * At the bottom of the page users can also see what it looks like to win and lose a game.
-
-  ![How To Play Section](/assets/readme-images/how_to_play.jpg)
-
-  [Back to top](<#contents>)
-
-### Settings Menu
-
-  * Here users can activate Desktop Mode, which just prevents the playing field from being resized with respect to their viewport. Users who know the game from the olden days might want to prefer the squares never to vary in size. This is deactivated by default because the resizing feature is essential on mobile devices.
-  * Users can also pick a different background color that they might prefer to the standard greyish blue.
-
-  ![Settings Menu](/assets/readme-images/settings_menu.jpg)
-
-  [Back to top](<#contents>)
-
-### Playing Field
-  
-  * On the playing field there is a circle arrow at the top left. By clicking it, users can quickly restart their games. This is essential because clicking a mine and losing in the process is such a frequent part of the game.
-  * The timer starts counting as soon as a game is started. It only stops once the player either loses or wins.
-  * The ^\_^ emoji indicates that the game is still going on. It temporarily changes to O\_O when the player is clicking a mine, which conveys a certain tension as every click is potentially the end of the game. Once players lose, it changes to X\_X indicating that the player is dead and to d^\_^b when they win to indicate a double thumbs up, acknowledging the player's feat. All of this was heavily inspired by the original game that had a graphical emoji with similar expressions.
-  * The mines counter shows the number of mines players have left to find. Every time a player marks a square as mined by right-clicking or long-pressing it, the counter goes down. As in the original game, it is not a clear indicator of whether the marked squares really contain mines, it does not perform a check. It simply serves as an indicator of the player's progress and can help with decisions late in the game when the player can evaluate how many mines there are in the last remaining squares. This can be helpful.
-  * The off button allows players to navigate back to the main menu.
-  * Every square on the playing field has a hover effect and an active effect for more feedback.
-  * The numbers that players reveal by clicking or tapping squares are color-coded to help players make faster decisions.
-  * When a game is lost, the background of the playing field will turn red, when the player wins, it turns green. This is different from the original game but gives additional feedback.
-  * When the game ends, all mines are revealed as their squares will show in black.
-
-  ![Playing Field: Easy Difficulty](/assets/readme-images/easy_difficulty.jpg)
-  ![Players wins](/assets/readme-images/win.jpg)
-  ![Players loses](/assets/readme-images/lose.jpg)
-
-  [Back to top](<#contents>)
 
 ## Future Implementations
 
-### Reveal zero squares automatically
-
-  *  When you click a square that does not border on any mined squares (zero square), the game should automatically reveal all adjacent squares and do the same if it finds any more zero squares in the process. This would mimick the original game's behavior.
-
-### Leaderboards
-
-  * Record times and player names for won games in leaderboards for the standard difficulty levels.
-
 ### Statistics
   
-  * Create statistics like 'x games won out of x attempts' or 'percentage of revealed squares before losing'.
-
-[Back to top](<#contents>)
-
-## Accessibility
-
-I have tried to keep the website as accessible as possible by using semantic HTML elements, providing adequate contrast for fonts, using the alt attribute for images, the title attribute for links, etc. To further ensure that the site is accessible, I ran tests with the Web Accessibility Evaluation Tool (WAVE) and also used a Chrome browser extension called Web Disability Simulator. More on this in [Testing](#testing).
+  * Create statistics like 'x games won out of x attempts'.
 
 [Back to top](<#contents>)
 
@@ -181,9 +112,7 @@ I have tried to keep the website as accessible as possible by using semantic HTM
 
 ## Languages Used
 
-  * HTML5
-  * CSS3
-  * Javascript
+  * Python
 
 ## Frameworks, Libraries & Programs Used
 
@@ -193,54 +122,61 @@ I have tried to keep the website as accessible as possible by using semantic HTM
 
   * [Google Fonts](https://fonts.google.com/) - To find and import fonts
 
-  * [CloudConvert](https://cloudconvert.com/) - To convert PNG images to WebP images and GIF to WebM animations
-
-  * [Colordot](https://color.hailpixel.com/) - To create the color palette above
-
   * [Favicon.io](https://favicon.io/) - To create a favicon
-
-  * [Font Awesome](https://fontawesome.com/) - For the Restart and Off Button icons
 
   * [Google Dev Tools](https://developer.chrome.com/docs/devtools/) - To work out bugs, troubleshoot and test features and play around with property values and to test the website using the Lighthouse Test
 
-  * [Compressor.io](https://compressor.io) - To compress images
-
-  * [GIMP](https://gimp.org) - To resize and convert images
-
-  * [ScreenToGif](https://www.screentogif.com/) - To record gameplay for the How to Play section and animations for the documentation of this project
-
   * [Text ASCII Art Generator](https://patorjk.com/software/taag/#p=testall&h=3&f=Alpha&t=Mastermind)
-
-  * [Am I Responsive?](https://ui.dev/amiresponsive) - To showcase the website on all of the images used in this documentation file
-
-  * [WAVE Web Accessibility Evaluation Tool](https://wave.webaim.org/) - To further ensure accessibility for all users
 
   [Back to top](<#contents>)
 
 # Testing
 
-  Please go [here](TESTING.md) for information about the testing that went into this project.
+## Testing user stories
+
+  * As a user, I want to learn how the game works.
+
+    -->  Users only need to read the explanation that's displayed when they start the game.
+
+  * As a user, I want to play MasterMind in a difficulty setting fitting my skill level so that I won't feel frustrated while playing.
+
+    -->  This is accomplished by setting code length and most of all number of allowed tries before the user loses. The game will always ask for these parameters at the start of every new game.
+
+  * As a user, I want the game to help me visualize the board and colors of the pegs.
+
+    --> This is done by printing a visual representation of the board to the terminal, with colored output where it makes things easier to read.
+
+## Solved Bugs
+
+  * At an early stage of development the evaluation checkmarks, rhombi and 'X's weren't colored. When I eventually changed that the game would not detect wins anymore because instead of
+  ```py
+  if playing_field[line_to_check]\
+                    .count(f'{colored_text("✓", "green")}') == \
+                    len(code_to_guess):
+  ``` 
+  the code only checked for "✓". Adding the f-string solved the problem.
+
+  * There were a couple of issues when I wanted to add the possibility to start new games after winning or losing, before the game simply exited. A Code Institute mentor pointed out that I did not simply call main() at the end of my code and that had loops in place where main() could be called from two different points.  
+    \
+  At this point the function that's now play_game() was my main() and I had more code at the root level. Renaming my main() to play_game(), wrapping the code that was not part of any functions into main() and fixing how I called main() solved the problem.
+
+## Known Bugs
+
+  * None.
 
 [Back to top](<#contents>)
 
 # Deployment
 
-## How to Deploy the Project on GitHub Pages
+## How to Deploy the Project on Heroku
 
-1. In your browser, navigate to the [GitHub page of this project.](https://github.com/beckoningstranger/pp2-mines)
-![Image of the repository's website](assets/readme-images/howtodeploy.jpg)
-2. Click on the 'Settings' button in the top menu
-3. Select the 'Pages' section in the side bar on the left
-4. Under 'Source' select 'Deploy from a branch'
-5. Select the 'main' branch
-6. Click 'Save'
-7. After about a minute, when you come back to the page, you will see the message 'Your site is live ...' with a link you can simply click.
+TBD
 
 [Back to top](<#contents>)
 
 ## How to Fork the Repository on GitHub
 
-1. In your browser, navigate to the [GitHub page of this project.](https://github.com/beckoningstranger/pp2-mines)
+1. In your browser, navigate to the [GitHub page of this project.](https://github.com/beckoningstranger/pp3-mastermind)
 2. Click the 'Fork' button at the top right of the page. If you are not the owner of the project, it will not appear greyed out to you:
 
 ![Location of Fork button](assets/readme-images/forkbutton.jpg)
@@ -249,7 +185,7 @@ I have tried to keep the website as accessible as possible by using semantic HTM
 
 ## How to Clone the Repository on GitHub
 
-1. In your browser, navigate to the [GitHub page of this project.](https://github.com/beckoningstranger/pp2-mines)
+1. In your browser, navigate to the [GitHub page of this project.](https://github.com/beckoningstranger/pp3-mastermind)
 2. Click the 'Code' button, make sure you have HTTPS selected and then click the button to copy the link to your clipboard as demonstrated in this GIF:
 
   ![How to Clone](assets/readme-images/howtoclone.jpg)
@@ -265,25 +201,31 @@ I have tried to keep the website as accessible as possible by using semantic HTM
 
   * All of the content was written by myself.
 
-  * The game principle is of course not my own and according to [the Minesweeper Wikipedia page](https://en.wikipedia.org/wiki/Microsoft_Minesweeper) its origin is unclear.
+  * According to [the game's Wikipedia page](https://en.wikipedia.org/wiki/Mastermind_(board_game)) it was created by [Mordecai Meirowitz](https://en.wikipedia.org/wiki/Mordecai_Meirowitz).
 
 ## Media
 
-  * For my favicon, I used [this free picture](https://pixabay.com/illustrations/bomb-explode-detonate-explosion-1602109/) by [95C](https://pixabay.com/users/95c-484762/).
+  * The picture of the game used at the top of this README file was taken by user[ZeroOne](https://en.wikipedia.org/wiki/User:ZeroOne) over on Wikipedia. It is licensed under the [Creative Commons Attribution-Share Alike 2.0 Generic license](https://creativecommons.org/licenses/by-sa/2.0/deed.en). No changes to the image were made.
 
 ## Code
 
-  * As this was my first Javascript project, there were many first times here, where I searched the web for solutions to my problems. Here is where I actually took code and used it for this project: 
-    
-    * When I was looking for a way to disable the event triggers for the playing field to stop players from playing on after losing, I finally found the possibility to use an abort signal. I learned this reading the [MDN addEventListener page](https://developer.mozilla.org/en-US/docs/Web/API/EventTarget/addEventListener) and adapted their code.
+There were many times where I searched the web for solutions to my problems. Here is where I actually took code and used it for this project: 
+  
+  * Trying to figure out how to output colored text in the terminal I looked at the colorama module. In the end I ran this code that I found [on Stackoverflow](https://stackoverflow.com/questions/61686780/python-colorama-print-all-colors)
+    ```py
+    from colorama import Fore
+    from colorama import init as colorama_init
+    colorama_init(autoreset=True)
+    colors = dict(Fore.__dict__.items())
+    print(colors)
+    ```
+  and simply wrote down all the ANSI codes that I wanted to use.
 
-    * When I was looking for a good way to resize the playing field specifically for a user's viewport, I learned how to get the needed values by reading [ryanve's answer on this Stackoverflow page](https://stackoverflow.com/questions/1248081/how-to-get-the-browser-viewport-dimensions).
+  * On [another Stackoverflow page](https://stackoverflow.com/questions/134934/display-number-with-leading-zeros) I learned how to print numbers with leading zeroes.
 
-    * Implementing a long press to enable users to mark squares as mines was harder than expected, but with [the answers on this Stackoverflow page](https://stackoverflow.com/questions/6139225/how-to-detect-a-long-touch-pressure-with-javascript-for-android-and-iphone) I could make it work.
+  * Creating the playing field, I iterate through a range of numbers in reverse order. Yet again, I found how to do that [on Stackoverflow](https://stackoverflow.com/questions/49539187/range-countdown-to-zero).
 
-    * [This article by Tulusibrahim](https://medium.com/geekculture/creating-counter-with-javascript-4b1c60892c45) helped me greatly to create my own timer.
-
-    * To save the settings the website uses cookies. As I had no prior knowledge of how this is done, I used the information in [W3School's article](https://www.w3schools.com/js/js_cookies.asp) on the subject from which I took one function without altering it.
+  * I wanted to print the solution and also what users entered in colored text, using my colored_text() function. The issue was that it would always cause a line break after every word. I learned how to omit that linebreak in an article on [stechies.com](https://www.stechies.com/python-print-without-newline/).
   
   [Back to top](<#contents>)
 
@@ -293,7 +235,7 @@ I would like to thank the following people
 
 * Precious Ijege, my mentor, for providing feedback on my ideas and helping me create this project.
 
-* My daughter for being interested in this project and learning how to play the game.
+* Code Institute's mentors, who provided help when I needed it.
 
 * My wife for proofreading my work.
 

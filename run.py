@@ -85,8 +85,8 @@ def generate_code(code_length):
 
 def colored_text(text, color):
     """
-    This allows to output colored text by attaching the codes belows
-    in front of the text. The last code resets the color.
+    This allows to output colored text by attaching the codes ANSI
+    codes below in front of the text. The last code resets the color.
     """
     if color == "yellow":
         color = '\x1b[93m'
@@ -163,6 +163,7 @@ def evaluate_user_input(guesses, round_no, allowed_tries, code_to_guess):
     index_counter = 0
     for guess in guesses:
         # Check if color is correct AND in correct place. If so, put a green ✓
+        # The sleep(1) in all of these is just for dramatic effect.
         if guess == code_to_guess[index_counter]:
             sleep(1)
             playing_field[round_number] = playing_field[round_number]\
