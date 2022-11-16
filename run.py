@@ -124,22 +124,25 @@ def take_user_input(turn, code_to_guess):
                     f"{colored_text('white', 'white')}, "
                     f"{colored_text('black', 'black')} and "
                     f"{colored_text('blue', 'blue')},\n"
-                    f"e.g. 'green blank pink cyan' or 'red black white'"
+                    f"e.g. 'green blank pink cyan' or 'red black white' "
                     f"without the quotation marks:"
                     f"\nRound {turn}: ").lower()
     if u_input == 'quit':
         return u_input
+    # This is the cheat code that will reveal the solution if entered
     if u_input == 'iseedeadpeople':
         global cheat_mode
         cheat_mode = True
         return "invalid"
     cleaned_u_input = u_input.split()
+    # Check whether all entered items are valid colors
     for item in cleaned_u_input:
         if item not in AVAILABLE_COLORS:
             print_playing_field()
             print(f"Sorry, '{item}' is not a valid color, please try again.")
             sleep(3)
             return "invalid"
+    # Check whether the user entered as many colors as there are in the code
     if len(cleaned_u_input) != len(code_to_guess):
         print_playing_field()
         print(f'You need to enter exactly {len(code_to_guess)} '
@@ -180,10 +183,12 @@ def evaluate_user_input(guesses, round_no, allowed_tries, code_to_guess):
         for guess in guesses:
             print(f"{colored_text(guess, guess)} ", end='')
         print()
-        print("Remember: '✓' means you got position and color right\n"
-              "          '◊' means the color is in the code, the position is"
-              " incorrect.\n"
-              "          'X' means this color is not in the code")
+        print(f"Remember: '{colored_text('✓', 'green')}' means you got "
+              f"position and color right\n"
+              f"          '{colored_text('◊', 'white')}' means while the "
+              f"color is in the code, its position is incorrect.\n"
+              f"          '{colored_text('X', 'red')}' means this color "
+              f"is not in the code")
     input("Press Enter to continue...")
 
 
@@ -210,32 +215,39 @@ def next_game():
 
 def explain_the_game():
     """
-    This explanatin of the game is shown to the user after he starts the game.
+    This explanation of the game is shown to the user after he starts the game.
     """
     system('clear')
-    print("\
-    Welcome to Mastermind!\n\n\
-    Mastermind was a popular board game in the 70ies and 80ies, where\n\
-    one player picks 4-5 colors (or blanks) to make up a code that the\n\
-    other player tries to guess. This is done by entering a color code per\n\
-    round, after every one of which the codemaker gives feedback on the\n\
-    entered code. This feedback gives the codebreaker the information they\n\
-    need to find out the code and win or run out of tries and lose.\n\n\
-    For each color that the codebreaker gets right _and_ that he also put \n\
-    in the correct spot, the codemaker places a black key peg on the\n\
-    board. For each color that is not in the correct spot, but which is\n\
-    in the code at another position, the codemaker places a white\n\
-    key peg.\n\n\
-    In this game, the key pegs are replaced by green checkmarks\n\
-    and white rhombi, and of course the codemaker is played entirely by\n\
-    the computer. Also, you can pick how long the color code should be\n\
-    and how many tries you have before you lose, but otherwise the rules\n\
-    are the same. Duplicate colors are allowed and the code may also\n\
-    include blanks. Theoretically, it's possible that the code is entirely\n\
-    made up of blanks.\n\
-    ")
-    input("\
-    Enjoy playing! Press Enter to continue...")
+    print(
+        f"Welcome to Mastermind!\n\n"
+        f"Mastermind was a popular board game in the 70ies and 80ies, where\n"
+        f"one player picks 4-5 colors (or blanks) to make up a code that the\n"
+        f"other player tries to guess. This is done by entering a color code "
+        f"per\n"
+        f"round, after every one of which the codemaker gives feedback on "
+        f"the\n"
+        f"entered code. This feedback gives the codebreaker the information"
+        f"they\n"
+        f"need to find out the code and win or run out of tries and lose.\n\n"
+        f"For each color that the codebreaker gets right _and_ that he also"
+        f"put \n"
+        f"in the correct spot, the codemaker places a black key peg on the\n"
+        f"board. For each color that is not in the correct spot,"
+        f"but which is\n"
+        f"in the code at another position, the codemaker places a white\n"
+        f"key peg.\n\n"
+        f"In this game, the key pegs are replaced by green checkmarks "
+        f"({colored_text('✓', 'green')})\n"
+        f"and white rhombi "
+        f"({colored_text('◊', 'white')}), and of course the codemaker is "
+        f"played entirely by\n"
+        f"the computer. Also, you can pick how long the color code should be\n"
+        f"and how many tries you have before you lose, but otherwise the "
+        f"rules\n"
+        f"are the same. Duplicate colors are allowed and the code may also\n"
+        f"include blanks. Theoretically, it's even possible that the code is\n"
+        f"entirely made up of blanks.\n")
+    input("Enjoy playing! Press Enter to continue...")
     system('clear')
 
 
@@ -249,18 +261,24 @@ def gather_game_params():
     try:
         code_length = int(input("How long do you want the color code "
                                 "to be? (3-7) "))
-    except ValueError:
-        code_length = 0
-    if code_length != 0:
+        # try will catch input that's a string or multiple numbers, but not
+        # numbers that are outside the specified range. This if-statement will.
+        if code_length <= 2 or code_length >= 8:
+            code_length = "error"
+    except (TypeError, ValueError):
+        code_length = "error"
+    if code_length != "error":
         try:
             number_of_allowed_tries = int(input("How many tries are allowed "
                                                 "before you lose? (4-10) "))
-        except ValueError:
-            number_of_allowed_tries = 0
+            if number_of_allowed_tries <= 3 or number_of_allowed_tries >= 11:
+                number_of_allowed_tries = "error"
+        except (TypeError, ValueError):
+            number_of_allowed_tries = "error"
     return code_length, number_of_allowed_tries
 
 
-def start_game(code_length, number_of_allowed_tries):
+def play_game(code_length, number_of_allowed_tries):
     """
     This takes how long the code is and how many tries the user has
     before he loses and then manages the whole game.
@@ -275,6 +293,7 @@ def start_game(code_length, number_of_allowed_tries):
     game_is_on = True
     while game_is_on:
         print_playing_field()
+        # If cheat mode is active, this will print the solution
         if cheat_mode:
             print('Pssst, the solution is: ', end='')
             for i in code_to_guess:
@@ -309,8 +328,8 @@ def start_game(code_length, number_of_allowed_tries):
             # Check for loss:
             if current_turn > number_of_allowed_tries:
                 print_playing_field()
-                print('You have exhausted your maximum number of tries '
-                      'and lose! Better luck next time!')
+                print('You have run out of tries and lose! Better luck '
+                      'next time!')
                 print('The solution was:', end=' ')
                 for i in code_to_guess:
                     print(colored_text(i, i), end=' ')
@@ -321,8 +340,9 @@ def start_game(code_length, number_of_allowed_tries):
 
 def main():
     """
-    This explains the game, asks for game parameters and then starts the game
-    after which it will ask whether the user wants to play again.
+    This first explains the game, then asks for game parameters, then starts
+    the game after which it will ask whether the user wants to play again.
+    If so, it loops around.
     """
     global keep_playing
     keep_playing = True
@@ -331,9 +351,8 @@ def main():
         game_parameters = gather_game_params()
         given_code_length = game_parameters[0]
         given_amount_of_tries = game_parameters[1]
-        if given_code_length in range(3, 8) and \
-                given_amount_of_tries in range(4, 11):
-            start_game(given_code_length, given_amount_of_tries)
+        if given_amount_of_tries != "error" and given_code_length != "error":
+            play_game(given_code_length, given_amount_of_tries)
         else:
             print('Invalid input, please try again!')
             sleep(2)
