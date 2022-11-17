@@ -6,20 +6,21 @@ Take a look at the deployed website: <a href="https://pp3-mastermind.herokuapp.c
 
 ![Mastermind - The original game](/assets/readme-images/mastermind.jpg)
 ![Mastermind in the terminal](/assets/readme-images/mastermind_terminal.png)
+![Gameplay](/assets/readme-images/win.gif)
 
 # Contents
 
 * [**User Experience UX**](#user-experience-ux)
   * [User Stories](#user-stories)
   * [Design](#design) 
-    * [Structure](#site-structure)
+    * [Structure](#structure)
     * [Typography](#typography)
 * [Features](#features)
   * [Existing Features](#existing-features)
     * [Explanations Screen](#game-explanations)
     * [Random Color Code Generation](#random-color-code-generation)
     * [Custom Difficulty Settings](#custom-difficulty-settings)
-    * [Player Mode Evaluation](#player-move-evaluation)
+    * [Player Move Evaluation](#player-move-evaluation)
     * [Cheat Mode](#cheat-mode)
     * [Future Implementations](#future-implementations)
 * [Technologies Used](#technologies-used)
@@ -29,9 +30,8 @@ Take a look at the deployed website: <a href="https://pp3-mastermind.herokuapp.c
 * [Testing](#testing)
   * [Testing User Stories](#testing-user-stories)
   * [Manual Testing](#manual-testing)
-  * [Browser compatibility]()
-  * [Lighthouse Testing]()
-  * [Python PEP8 Code Validation]()
+  * [Browser compatibility](#browser-compatibility)
+  * [Python PEP8 Code Validation](#python-pep8-code-validation)
   * [Solved Bugs](#solved-bugs)
   * [Known Bugs](#known-bugs)
 * [Deployment](#deployment)
@@ -65,8 +65,6 @@ Take a look at the deployed website: <a href="https://pp3-mastermind.herokuapp.c
   The player can then enter color codes to play. Colors have to be seperated with spaces, this information is always visible below the 'board'.
   After the player wins or loses, they are asked whether they want to play again. Choosing no will simply exit the game, but if players choose to play again the game loops back to setting the difficulty level.
 
-  [Back to top](<#contents>)
-
 ### Typography
 
   For the logo, I used the 'Big' Font available on [Patrick Gillespie](https://www.instagram.com/patorjk/)'s [Text to ASCII Art Generator](http://patorjk.com/software/taag/). It's easily readable and does not take up too much space.
@@ -83,6 +81,8 @@ Take a look at the deployed website: <a href="https://pp3-mastermind.herokuapp.c
 
   ![Explanations](/assets/readme-images/explanation.png)
 
+  [Back to top](<#contents>)
+
 ### Random Color Code Generation
 
 * The color code the player has to guess is generated randomly so that every game is different.
@@ -92,6 +92,8 @@ Take a look at the deployed website: <a href="https://pp3-mastermind.herokuapp.c
   * The player can customize the difficulty of the game by setting the code length from 3-7 colors and the number of tries to a number between 4 and 10.
 
   ![Main Menu](/assets/readme-images/difficulty.png)
+
+  [Back to top](<#contents>)
 
 ### Player Move Evaluation
 
@@ -109,7 +111,7 @@ Take a look at the deployed website: <a href="https://pp3-mastermind.herokuapp.c
 
 ### Statistics
   
-  * Create statistics like 'x games won out of x attempts'.
+  * Create statistics like 'x games won out of y attempts'.
 
 [Back to top](<#contents>)
 
@@ -131,13 +133,11 @@ Take a look at the deployed website: <a href="https://pp3-mastermind.herokuapp.c
 
   * [GitHub](https://github.com) - To save and store my project files
 
-  * [Google Fonts](https://fonts.google.com/) - To find and import fonts
+  * [Heroku](https://heroku.com) - To deploy the project
 
-  * [Favicon.io](https://favicon.io/) - To create a favicon
+  * [ScreenToGif](https://www.screentogif.com/) - To record gameplay for the documentation of this project
 
-  * [Google Dev Tools](https://developer.chrome.com/docs/devtools/) - To work out bugs, troubleshoot and test features and play around with property values and to test the website using the Lighthouse Test
-
-  * [Text ASCII Art Generator](https://patorjk.com/software/taag/#p=testall&h=3&f=Alpha&t=Mastermind)
+  * [Text ASCII Art Generator](https://patorjk.com/software/taag/#p=testall&h=3&f=Alpha&t=Mastermind) - For the logo displayed at the top of the board while playing
 
   [Back to top](<#contents>)
 
@@ -157,6 +157,8 @@ Take a look at the deployed website: <a href="https://pp3-mastermind.herokuapp.c
 
     --> This is done by printing a visual representation of the board to the terminal, with colored output where it makes things easier to read.
 
+  [Back to top](<#contents>)
+
 ## Manual Testing
 
   * I play tested the game extensively. As this is a quite simple game, there are only a few places where problems can occur due to user input. 
@@ -167,7 +169,8 @@ Take a look at the deployed website: <a href="https://pp3-mastermind.herokuapp.c
   ```
 
   * The other instances of user input were thorougly tested. After fixing obvious issues (c.f. [solved bugs](#solved-bugs)) I can no longer make the game crash or behave in any other way but the intended one.
-  ![Input errors when settings game parameters](/assets/readme-images/)
+
+    ![Input errors when settings game parameters](/assets/readme-images/input_validation.gif)
 
   * The game correctly triggers winning and losing behavior, no matter the code length or number of allowed tries.
 
@@ -178,6 +181,25 @@ Take a look at the deployed website: <a href="https://pp3-mastermind.herokuapp.c
   * Activating cheat mode works and shows the correct code.
 
   * Starting new games after winning or losing works.
+
+  [Back to top](<#contents>)
+
+### Browser compatibility
+
+  * The deployed page was tested in Mozilla Firefox, Google Chrome, Microsoft Edge, Opera and Brave with no issues. Terminal output on Firefox appears to have a greenish tint in some places but it does not impact the functionality:
+
+      ![Greenish output in Firefox](/assets/readme-images/firefox_greenish.png)
+
+  [Back to top](<#contents>)
+
+### Python PEP8 Code Validation
+
+  * Tests using Code Institute's Linter did not show any issues:
+
+    ![run.py](/assets/readme-images/run-linter.png)
+    ![art.py](/assets/readme-images/art-linter.png)
+
+  [Back to top](<#contents>)
 
 ## Solved Bugs
 
@@ -217,7 +239,34 @@ Take a look at the deployed website: <a href="https://pp3-mastermind.herokuapp.c
 
 ## How to Deploy the Project on Heroku
 
-TBD
+  1. Create a [Heroku](https://www.heroku.com/) account or sign into your existing account.
+  2. On you heroku dashboard, click the New button and then select 'Create new app'.\
+    ![Creating a new app on Heroku dashboard](/assets/readme-images/create_new_app.png)
+
+  3. Enter an app name, pick a region based on where you are in the world and then click 'Create app'.\
+    ![Create New App Screen](/assets/readme-images/naming_the_app.png)
+
+  4. On the 'Deploy' tab of your new project, connect your project to your Github account.\
+    ![Connect Heroku project to Github](/assets/readme-images/connect_to_github.png)
+
+  5. Now click the Settings tab and click the 'Reveal config vars' button.\
+    ![Config Vars](/assets/readme-images/config_vars.png)
+
+  6. Add a config var by entering 8000 in the PORT in the KEY field and 8000 in the VALUE field.\
+    ![Setting 8000 PORT](/assets/readme-images/setting_8000_port.png)
+
+  7. Scroll down to the Buildpacks section and click the 'Add buildpack' button.\
+    ![Buildpacks section](/assets/readme-images/buildpacks_section.png)
+
+  8. Add both the Python and Node.js buildpacks:\
+    ![Click these to add buildpacks](/assets/readme-images/adding_buildpacks.png)
+
+  9. It should look like this after you're done:\
+    ![Added Buildpacks](/assets/readme-images/added_buildpacks.png)
+  
+  10. Back on the Deploy tab, scroll to the bottom and click 'Deploy Branch'. Optionally, you can also enable Automatic Deploys.
+    ![Deploy the project](/assets/readme-images/deploy_project.png)
+
 
 [Back to top](<#contents>)
 
@@ -226,7 +275,7 @@ TBD
 1. In your browser, navigate to the [GitHub page of this project.](https://github.com/beckoningstranger/pp3-mastermind)
 2. Click the 'Fork' button at the top right of the page. If you are not the owner of the project, it will not appear greyed out to you:
 
-![Location of Fork button](assets/readme-images/forkbutton.jpg)
+![Location of Fork button](assets/readme-images/howtofork.png)
 
 [Back to top](<#contents>)
 
@@ -235,7 +284,7 @@ TBD
 1. In your browser, navigate to the [GitHub page of this project.](https://github.com/beckoningstranger/pp3-mastermind)
 2. Click the 'Code' button, make sure you have HTTPS selected and then click the button to copy the link to your clipboard as demonstrated in this GIF:
 
-  ![How to Clone](assets/readme-images/howtoclone.jpg)
+  ![How to Clone](assets/readme-images/howtoclone.png)
 
 3. Open your IDE and either use the functionality it provides (many IDE offer buttons that help you clone repositories) and paste your link there to have your clone created or go to the terminal and type: 'git clone \[insert your link here\]'
 4. Hit ENTER and wait for you local clone to be created.
@@ -252,7 +301,7 @@ TBD
 
 ## Media
 
-  * The picture of the game used at the top of this README file was taken by user[ZeroOne](https://en.wikipedia.org/wiki/User:ZeroOne) over on Wikipedia. It is licensed under the [Creative Commons Attribution-Share Alike 2.0 Generic license](https://creativecommons.org/licenses/by-sa/2.0/deed.en). No changes to the image were made.
+  * The picture of the game used at the top of this README file was taken by user [ZeroOne](https://en.wikipedia.org/wiki/User:ZeroOne) over on Wikipedia. It is licensed under the [Creative Commons Attribution-Share Alike 2.0 Generic license](https://creativecommons.org/licenses/by-sa/2.0/deed.en). No changes to the image were made.
 
 ## Code
 
@@ -266,13 +315,13 @@ There were many times where I searched the web for solutions to my problems. Her
     colors = dict(Fore.__dict__.items())
     print(colors)
     ```
-  and simply wrote down all the ANSI codes that I wanted to use.
+    and simply wrote down all the ANSI codes that I wanted to use.
 
   * On [another Stackoverflow page](https://stackoverflow.com/questions/134934/display-number-with-leading-zeros) I learned how to print numbers with leading zeroes.
 
   * Creating the playing field, I iterate through a range of numbers in reverse order. Yet again, I found how to do that [on Stackoverflow](https://stackoverflow.com/questions/49539187/range-countdown-to-zero).
 
-  * I wanted to print the solution and also what users entered in colored text, using my colored_text() function. The issue was that it would always cause a line break after every word. I learned how to omit that linebreak in an article on [stechies.com](https://www.stechies.com/python-print-without-newline/).
+  * I wanted to print the solution and also what users entered in colored text, using my colored_text() function. The issue was that it would always cause a line break after every word. In an article on [stechies.com](https://www.stechies.com/python-print-without-newline/) I learned how to omit that linebreak.
   
   [Back to top](<#contents>)
 
