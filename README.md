@@ -14,6 +14,7 @@ Take a look at the deployed website: <a href="https://pp3-mastermind.herokuapp.c
   * [User Stories](#user-stories)
   * [Design](#design) 
     * [Structure](#structure)
+    * [Flowchart](#flowchart)
     * [Typography](#typography)
 * [Features](#features)
   * [Existing Features](#existing-features)
@@ -64,6 +65,16 @@ Take a look at the deployed website: <a href="https://pp3-mastermind.herokuapp.c
   After this, they can set his own difficulty level by setting the length of the code and the number of times they are allowed to guess before they lose. As experienced players will need about 5-7 tries to guess a code of 7 colors, the maximum amount of 10 tries gives beginners plenty of wiggling room. Shorter codes will generally require less tries.
   The player can then enter color codes to play. Colors have to be seperated with spaces, this information is always visible below the 'board'.
   After the player wins or loses, they are asked whether they want to play again. Choosing no will simply exit the game, but if players choose to play again the game loops back to setting the difficulty level.
+
+### Flowchart
+
+<br />
+<details>
+  <summary>Click to show flowchart</summary>
+
+  #### ![Flowchart](/assets/readme-images/mastermind.drawio.png)
+</details><br />
+
 
 ### Typography
 
@@ -128,6 +139,8 @@ Take a look at the deployed website: <a href="https://pp3-mastermind.herokuapp.c
   * [time](https://docs.python.org/3/library/time.html), for it's sleep function. This is used when error messages are displayed (e.g. invalid input) but also for dramatic effect when the player's guesses are evaluated
 
 ## Frameworks, Libraries & Programs Used
+
+  * [Draw.io](https://draw.io) - To create a flowchart that illustrates the game's logic
 
   * [Git](https://git-scm.com/) - For version control
 
