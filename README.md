@@ -1,11 +1,10 @@
 # MasterMind
 
-This simple terminal game allows people to play MasterMind, a logic game for children that came out in the 1970ies. I learned this game as a kid when I was in primary school. This is a two player game where one player ('the codemaker') sets a color combination that the other player ('the codebreaker') must guess. To guess, the codebreaker simply enters a color code after which the codemaker provides feedback by placing key pegs of two different colors on the board. One color signals that the codebreaker has placed a color peg in the correct position while the other color signals that while the color peg is in the code, it's not in the correct position. With this feedback, the codebreaker will decypher the color code, but he loses if the does not manage to do it in the prescribed number of tries. The length of the code and the amount of tries available differed from edition to edition of this game, and in this computer version the player can set these parameters himself.
+This simple terminal game allows people to play MasterMind, a logic game for children that came out in the 1970s. I learned this game as a kid when I was in primary school. This is a two player game where one player ('the codemaker') sets a color combination that the other player ('the codebreaker') must guess. To guess, the codebreaker simply enters a color code after which the codemaker provides feedback by placing key pegs of two different colors on the board. One color signals that the codebreaker has placed a color peg in the correct position while the other color signals that while the color peg is in the code, it is not in the correct position. With this feedback, the codebreaker will decypher the color code, but he loses if he does not manage to do it in the prescribed number of tries. The length of the code and the amount of tries available differed from edition to edition of this game, and in this computer version the player can set these parameters himself.
 
 Take a look at the deployed website: <a href="https://pp3-mastermind.herokuapp.com/" target="_blank" rel="noopener">MasterMind</a>.
 
 ![Mastermind - The original game](/assets/readme-images/mastermind.jpg)
-![Mastermind in the terminal](/assets/readme-images/mastermind_terminal.png)
 ![Gameplay](/assets/readme-images/win.gif)
 
 # Contents
@@ -23,7 +22,8 @@ Take a look at the deployed website: <a href="https://pp3-mastermind.herokuapp.c
     * [Custom Difficulty Settings](#custom-difficulty-settings)
     * [Player Move Evaluation](#player-move-evaluation)
     * [Cheat Mode](#cheat-mode)
-    * [Future Implementations](#future-implementations)
+  * [Future Implementations](#future-implementations)
+    * [Statistics](#statistics)
 * [Technologies Used](#technologies-used)
   * [Languages Used](#languages-used)
   * [Python Modules Used](#python-modules-used)
@@ -31,8 +31,8 @@ Take a look at the deployed website: <a href="https://pp3-mastermind.herokuapp.c
 * [Testing](#testing)
   * [Testing User Stories](#testing-user-stories)
   * [Manual Testing](#manual-testing)
-  * [Browser compatibility](#browser-compatibility)
-  * [Python PEP8 Code Validation](#python-pep8-code-validation)
+    * [Browser compatibility](#browser-compatibility)
+    * [Python PEP8 Code Validation](#python-pep8-code-validation)
   * [Solved Bugs](#solved-bugs)
   * [Known Bugs](#known-bugs)
 * [Deployment](#deployment)
@@ -62,9 +62,9 @@ Take a look at the deployed website: <a href="https://pp3-mastermind.herokuapp.c
 ### Structure
 
   When the game starts, the player is shown a brief explanation of how the game works.
-  After this, they can set his own difficulty level by setting the length of the code and the number of times they are allowed to guess before they lose. As experienced players will need about 5-7 tries to guess a code of 7 colors, the maximum amount of 10 tries gives beginners plenty of wiggling room. Shorter codes will generally require less tries.
+  After this, they can set their own difficulty level by setting the length of the code and the number of times they are allowed to guess before they lose. As experienced players will need about 5-7 tries to guess a code of 7 colors, the maximum amount of 10 tries gives beginners plenty of wiggling room. Shorter codes will generally require less tries.
   The player can then enter color codes to play. Colors have to be seperated with spaces, this information is always visible below the 'board'.
-  After the player wins or loses, they are asked whether they want to play again. Choosing no will simply exit the game, but if players choose to play again the game loops back to setting the difficulty level.
+  After the player wins or loses, they are asked whether they want to play again. Choosing no will simply exit the game, but if players choose to play again, the game will loop back to setting the difficulty level.
 
 ### Flowchart
 
@@ -78,7 +78,7 @@ Take a look at the deployed website: <a href="https://pp3-mastermind.herokuapp.c
 
 ### Typography
 
-  For the logo, I used the 'Big' Font available on [Patrick Gillespie](https://www.instagram.com/patorjk/)'s [Text to ASCII Art Generator](http://patorjk.com/software/taag/). It's easily readable and does not take up too much space.
+  For the logo, I used the 'Big' Font available on [Patrick Gillespie](https://www.instagram.com/patorjk/)'s [Text to ASCII Art Generator](http://patorjk.com/software/taag/). It is easily readable and does not take up too much space.
 
   [Back to top](<#contents>)
 
@@ -121,7 +121,7 @@ Take a look at the deployed website: <a href="https://pp3-mastermind.herokuapp.c
 ## Future Implementations
 
 ### Statistics
-  
+  1970ies
   * Create statistics like 'x games won out of y attempts'.
 
 [Back to top](<#contents>)
@@ -135,8 +135,8 @@ Take a look at the deployed website: <a href="https://pp3-mastermind.herokuapp.c
 ## Python Modules Used
 
   * [random](https://docs.python.org/3/library/random.html), for its choice function that I use to randomly generate the color codes
-  * [os](https://docs.python.org/3/library/os.html), for it's clear function that allows me to clear the screen
-  * [time](https://docs.python.org/3/library/time.html), for it's sleep function. This is used when error messages are displayed (e.g. invalid input) but also for dramatic effect when the player's guesses are evaluated
+  * [os](https://docs.python.org/3/library/os.html), for its clear function that allows me to clear the screen
+  * [time](https://docs.python.org/3/library/time.html), for its sleep function. This is used when error messages are displayed (e.g. invalid input) but also for dramatic effect when the player's guesses are evaluated
 
 ## Frameworks, Libraries & Programs Used
 
@@ -164,7 +164,7 @@ Take a look at the deployed website: <a href="https://pp3-mastermind.herokuapp.c
 
   * As a user, I want to play MasterMind in a difficulty setting fitting my skill level so that I won't feel frustrated while playing.
 
-    -->  This is accomplished by setting code length and most of all number of allowed tries before the user loses. The game will always ask for these parameters at the start of every new game.
+    -->  This is accomplished by setting code length and most of all by setting the number of allowed tries before the user loses. The game will always ask for these parameters at the start of every new game.
 
   * As a user, I want the game to help me visualize the board and colors of the pegs.
 
@@ -181,7 +181,7 @@ Take a look at the deployed website: <a href="https://pp3-mastermind.herokuapp.c
   input("Press Enter to continue...")
   ```
 
-  * The other instances of user input were thorougly tested. After fixing obvious issues (c.f. [solved bugs](#solved-bugs)) I can no longer make the game crash or behave in any other way but the intended one.
+  * The other instances of user input were thoroughly tested. After fixing obvious issues (c.f. [Solved bugs](#solved-bugs)) I can no longer make the game crash or behave in any other way but the intended one.
 
     ![Input errors when settings game parameters](/assets/readme-images/input_validation.gif)
 
@@ -216,19 +216,19 @@ Take a look at the deployed website: <a href="https://pp3-mastermind.herokuapp.c
 
 ## Solved Bugs
 
-  * At an early stage of development the evaluation checkmarks, rhombi and 'X's weren't colored. When I eventually changed that the game would not detect wins anymore because instead of
-  ```py
-  if playing_field[line_to_check]\
-                    .count(f'{colored_text("✓", "green")}') == \
-                    len(code_to_guess):
-  ``` 
-  the code only checked for "✓". Adding the f-string solved the problem.
+  * At an early stage of development the evaluation checkmarks, rhombi and 'X's weren't colored. When I eventually changed that, the game would not detect wins anymore because instead of
+    ```py
+    if playing_field[line_to_check]\
+                      .count(f'{colored_text("✓", "green")}') == \
+                      len(code_to_guess):
+    ``` 
+    the code only checked for "✓". Adding the f-string solved the problem.
 
-  * There were a couple of issues when I wanted to add the possibility to start new games after winning or losing, before the game simply exited. A Code Institute mentor pointed out that I did not simply call main() at the end of my code and that had loops in place where main() could be called from two different points.  
+  * There were a couple of issues when I wanted to add the possibility to start new games after winning or losing, before the game simply exited. A Code Institute tutor pointed out that I did not simply call main() at the end of my code and that had loops in place where main() could be called from two different points.
     \
   At that point the function that's now play_game() was my main() and there was more code at the root level. Renaming my main() to play_game(), wrapping the code that was not part of any functions into main() and only calling main() once, at the very end of the file, solved the problem.
 
-  * There were multiple issues where the game would exit unexpectedly because I had not implemented good input validation. One example is when the game asks how long the generated code is supposed to be it would throw value and type errors when the user would enter letters because the input is immediately processed by the int() function. This was solved with try and except:
+  * There were multiple issues where the game would exit unexpectedly because I had not implemented good input validation. One example is when the game asks how long the generated code is supposed to be, it would throw value and type errors when the user would enter letters because the input is immediately processed by the int() function. This was solved with try and except:
     ```py
     try:
         code_length = int(input("How long do you want the color code "
@@ -253,7 +253,7 @@ Take a look at the deployed website: <a href="https://pp3-mastermind.herokuapp.c
 ## How to Deploy the Project on Heroku
 
   1. Create a [Heroku](https://www.heroku.com/) account or sign into your existing account.
-  2. On you heroku dashboard, click the New button and then select 'Create new app'.\
+  2. On your Heroku dashboard, click the New button and then select 'Create new app'.\
     ![Creating a new app on Heroku dashboard](/assets/readme-images/create_new_app.png)
 
   3. Enter an app name, pick a region based on where you are in the world and then click 'Create app'.\
@@ -265,7 +265,7 @@ Take a look at the deployed website: <a href="https://pp3-mastermind.herokuapp.c
   5. Now click the Settings tab and click the 'Reveal config vars' button.\
     ![Config Vars](/assets/readme-images/config_vars.png)
 
-  6. Add a config var by entering 8000 in the PORT in the KEY field and 8000 in the VALUE field.\
+  6. Add a config var by entering PORT in the KEY field and 8000 in the VALUE field.\
     ![Setting 8000 PORT](/assets/readme-images/setting_8000_port.png)
 
   7. Scroll down to the Buildpacks section and click the 'Add buildpack' button.\
@@ -310,7 +310,7 @@ Take a look at the deployed website: <a href="https://pp3-mastermind.herokuapp.c
 
   * All of the content was written by myself.
 
-  * According to [the game's Wikipedia page](https://en.wikipedia.org/wiki/Mastermind_(board_game)) it was created by [Mordecai Meirowitz](https://en.wikipedia.org/wiki/Mordecai_Meirowitz).
+  * According to [the game's Wikipedia page](https://en.wikipedia.org/wiki/Mastermind_(board_game)) MasterMind was created by [Mordecai Meirowitz](https://en.wikipedia.org/wiki/Mordecai_Meirowitz).
 
 ## Media
 
@@ -318,7 +318,7 @@ Take a look at the deployed website: <a href="https://pp3-mastermind.herokuapp.c
 
 ## Code
 
-There were many times where I searched the web for solutions to my problems. Here is where I actually took code and used it for this project: 
+There were many times I searched the web for solutions to my problems. Here is where I actually took code and used it for this project: 
   
   * Trying to figure out how to output colored text in the terminal I looked at the colorama module. In the end I ran this code that I found [on Stackoverflow](https://stackoverflow.com/questions/61686780/python-colorama-print-all-colors)
     ```py
@@ -344,7 +344,7 @@ I would like to thank the following people
 
 * Precious Ijege, my mentor, for providing feedback on my ideas and helping me create this project.
 
-* Code Institute's mentors, who provided help when I needed it.
+* Code Institute's tutors, who provided help when I needed it.
 
 * My wife for proofreading my work.
 

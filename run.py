@@ -17,7 +17,7 @@ AVAILABLE_COLORS = ["green", "yellow", "red", "blue", "pink",
 def create_playing_field(number_of_allowed_tries, code_to_guess):
     """
     Takes how many tries user has and how long the code is, then
-    creates a list of strings that makes of the playing field.
+    creates a list of strings that makes up the playing field.
     To make the last try appear on top of the list, it steps through
     the range from first to last try in reverse order.
     """
@@ -43,7 +43,7 @@ def create_playing_field(number_of_allowed_tries, code_to_guess):
 
 def print_playing_field():
     """
-    Print out the playing field by having the logo at the top and then
+    Prints out the playing field by having the logo at the top and then
     printing every line of the list that contains the playing field.
     """
     system('clear')
@@ -55,7 +55,7 @@ def print_playing_field():
 
 def add_user_input_to_playing_field(rnd, user_inp, number_of_allowed_tries):
     """
-    Modify the string that holds the information for this turn so that
+    Modifies the string that holds the information for this turn so that
     the colors the user entered will appear on the playing field.
     """
     round_number = -abs(rnd) + number_of_allowed_tries
@@ -221,19 +221,19 @@ def explain_the_game():
     system('clear')
     print(
         f"Welcome to Mastermind!\n\n"
-        f"Mastermind was a popular board game in the 70ies and 80ies, where\n"
+        f"Mastermind was a popular board game in the 70s and 80s, where\n"
         f"one player picks 4-5 colors (or blanks) to make up a code that the\n"
         f"other player tries to guess. This is done by entering a color code "
         f"per\n"
         f"round, after every one of which the codemaker gives feedback on "
         f"the\n"
-        f"entered code. This feedback gives the codebreaker the information"
+        f"entered code. This feedback gives the codebreaker the information "
         f"they\n"
         f"need to find out the code and win or run out of tries and lose.\n\n"
-        f"For each color that the codebreaker gets right _and_ that he also"
+        f"For each color that the codebreaker gets right _and_ that he also "
         f"put \n"
         f"in the correct spot, the codemaker places a black key peg on the\n"
-        f"board. For each color that is not in the correct spot,"
+        f"board. For each color that is not in the correct spot, "
         f"but which is\n"
         f"in the code at another position, the codemaker places a white\n"
         f"key peg.\n\n"
@@ -254,7 +254,7 @@ def explain_the_game():
 
 def gather_game_params():
     """
-    Here, the users sets how long the colors code will be and how many tries
+    Here, the users sets how long the color code will be and how many tries
     he has to guess the code.
     """
     print(LOGO)
@@ -342,8 +342,7 @@ def play_game(code_length, number_of_allowed_tries):
 def main():
     """
     This first explains the game, then asks for game parameters, then starts
-    the game after which it will ask whether the user wants to play again.
-    If so, it loops around.
+    the game.
     """
     global keep_playing
     keep_playing = True
